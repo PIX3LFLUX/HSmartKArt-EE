@@ -1,1 +1,1 @@
-Ubuntu Server running Jupyter Notebook with JupyterLab
+A Flexible MQTT based EE Architecture for the HSmartKArt.
