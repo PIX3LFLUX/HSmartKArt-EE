@@ -1,5 +1,5 @@
 **[Introduction](#introduction)** |
-**[MQTT-based E/E architecture](#mqtt-based-e/e-architecture)** |
+**[MQTT-based E/E architecture](#mqtt-based-ee-architecture)** |
 **[Prerequisites](#prerequisites)** |
 **[Installation](#installation)** |
 **[To-Do](#to-do)**
