@@ -52,7 +52,7 @@ Considering future vehicle systems following requirements are applying for E/E a
 4. Scalability
 
 Based on this criteria the following design has been elaborated:
-![MQTT-based E/E architecture](docs/mqttee.svg)
+![MQTT-based E/E architecture](docs/mqttee.png)
 
 The reference deployment using Raspberry Pis as MQTT Bridges, a Laptop as Ubuntu Server and
 the broker.hivemq.com as MQTT Broker has the following structure:
