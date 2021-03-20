@@ -100,7 +100,7 @@ NOTE:	SocketCAN library for CAN communication is part of the Linux Core and need
 For installation transfer the `install-jupyter.sh` file (VERZEICHNIS MIT ABHÄNGIGGKEITEN?????????????????????????????????????????????????) to the Host PC running Ubuntu Server
 OS. Enter following command in the command line to install the Jupyter Notebook Server:
 ```bash
-sudo bash ./install-mqtt-bridge.sh
+sudo bash ./install-jupyter.sh
 ```
 The script will install following comoponents:
 1. Basic libraries and dependencies
