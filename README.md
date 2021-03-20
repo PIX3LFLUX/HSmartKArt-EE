@@ -2,6 +2,7 @@
 **[MQTT-based E/E architecture](#mqtt-based-ee-architecture)** |
 **[Prerequisites](#prerequisites)** |
 **[Installation](#installation)** |
+**[Usage](#usage)** |
 **[To-Do](#to-do)**
 
 # HSmartKArt-EE
@@ -51,17 +52,18 @@ Considering future vehicle systems following requirements are applying for E/E a
 4. Scalability
 
 Based on this criteria the following design has been elaborated:
-![MQTT-based E/E architecture](docs/mqttee.png)
+![MQTT-based E/E architecture](docs/mqttee.svg)
 
-The reference deployment using Raspberry Pis as MQTT Bridges, a Laptop as Ubuntu Server and the
-broker.hivemq.com as MQTT Broker has the following structure:
+The reference deployment using Raspberry Pis as MQTT Bridges, a Laptop as Ubuntu Server and
+the broker.hivemq.com as MQTT Broker has the following structure:
 ![MQTT-based E/E architecture](docs/hsmartkartee.png)
 
 
 ## Prerequisites
 
-For the **MQTT/CAN Bridge** component a Raspberry Pi with a CAN HAT is needed. Alternatively a
-similar device running a Debian-based Linux distribution with a CAN interface is possible.
+For the **MQTT/CAN Bridge** component a Raspberry Pi with a CAN HAT is needed. Alternatively
+using a similar device running a Debian-based Linux distribution with a CAN interface is
+possible. The CAN interface needs to be compatible with the SocketCAN Linux library.
 
 When using a public **MQTT Broker** like the one provided by HiveMQ (broker.hivemw.com) no
 setup is necessary. Only the URL of the Broker (and possibly the IP) is needed to establish a
@@ -75,6 +77,56 @@ due to the IP policy of Unitymedia (DS Lite).
 
 
 ## Installation
+To install the MQTT Bridge on the Raspberry Pi an installation script is provided. Also an
+installation script for the Jupyter Noteboook Server running on a Host PC running the Ubuntu
+Server OS is provided.
+
+### Installation script for MQTT Bridge
+For installation transfer the `install-mqtt-bridge.sh` file to the Raspberry Pi. To install
+the software for the MQTT Bridge on a Raspberry Pi simply enter the following commands in the
+command line:
+```bash
+sudo bash ./install-mqtt-bridge.sh
+```
+The script will install following comoponents:
+1. Basic libraries and dependencies
+2. Paho MQTT C Client library (https://www.eclipse.org/paho/index.php?page=clients/c/index.php)
+3. The mqttee-bridge software
+
+NOTE:	SocketCAN library for CAN communication is part of the Linux Core and needs no manual
+		installation. See also https://en.wikipedia.org/wiki/SocketCAN) for more information.
+
+### Installation script for Jupyter Notebook Server
+For installation transfer the `install-jupyter.sh` file (VERZEICHNIS MIT ABHÄNGIGGKEITEN?????????????????????????????????????????????????) to the Host PC running Ubuntu Server
+OS. Enter following command in the command line to install the Jupyter Notebook Server:
+```bash
+sudo bash ./install-mqtt-bridge.sh
+```
+The script will install following comoponents:
+1. Basic libraries and dependencies
+2. Certbot for SSL certificate
+3. Nginx Web Server
+4. Linux firewall setup (ufw)
+5. Miniconda 3
+6. JupyterLab (including Jupyter Server and Jupyter Notebook components)
+7. Paho MQTT Python Client
+
+The Jupyter Notebook Server ready to use with a browser for developing applications subscribing
+or publishing to CAN data topics or configuration topics and process the received sensor data.
+
+## Usage
+
+### MQTT Bridge
+To start the MQTT Bridge software run the following command in the directory XYZDIRECTORY?????????????????????????????????????????????????????????????????????????????????????????????????????
+
+### Jupyter Notebook Server
+A Nginx Web Server is installed on the Host PC for SSL implementation. Nginx redirects the
+incoming HTTPS traffic to the Jupyter Notebook Server.
+
+The Jupyter Notebook Server is setup as a systemd service and will start automatically on
+system startup. To use the Jupyter Notebook Server open a browser and enter the domain
+associated with the IP adress of Ubuntu Server.
+In a local environment the local IP address of the Ubuntu Server can be used.
 
 
 ## To-Do
