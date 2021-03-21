@@ -119,7 +119,7 @@ sensor data.
 
 ### XML configuration file
 The configuration of the MQTT Bridges is described using the
-[Extensible Markup Language](https://www.w3.org/XML/) (XML).
+[Extensible Markup Language (XML)](https://www.w3.org/XML/).
 
 The provided XML configuration file applies for a CAN-to-MQTT Bridge.
 
