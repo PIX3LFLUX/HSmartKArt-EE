@@ -3,7 +3,6 @@
 **[Prerequisites](#prerequisites)** |
 **[Installation](#installation)** |
 **[Usage](#usage)** |
-**[To-Do](#to-do)**
 
 # HSmartKArt-EE
 
@@ -72,8 +71,8 @@ connection to the Broker.
 For the **Ubuntu Server** a Host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed.
 Also a public IPv4 address and/or a DNS with an A record for the public IP address needs to be
 available.
-NOTE: When using Unitymedia Connect Box consider the setup of an Portmapper to avoid errors
-due to the IP policy of Unitymedia (DS Lite).
+**NOTE**:	When using Unitymedia Connect Box consider the setup of an Portmapper to avoid
+			errors due to the IP policy of Unitymedia (DS Lite).
 
 
 ## Installation
@@ -93,11 +92,12 @@ The script will install following comoponents:
 2. Paho MQTT C Client library (https://www.eclipse.org/paho/index.php?page=clients/c/index.php)
 3. The mqttee-bridge software
 
-NOTE:	SocketCAN library for CAN communication is part of the Linux Core and needs no manual
-		installation. See also https://en.wikipedia.org/wiki/SocketCAN) for more information.
+**NOTE**:	SocketCAN library for CAN communication is part of the Linux Kernel and needs no
+			manual installation. See also https://en.wikipedia.org/wiki/SocketCAN for more
+			information.
 
 ### Installation script for Jupyter Notebook Server
-For installation transfer the `install-jupyter.sh` file (VERZEICHNIS MIT ABHÄNGIGGKEITEN?????????????????????????????????????????????????) to the Host PC running Ubuntu Server
+For installation transfer the `install-jupyter.sh` file (VERZEICHNIS MIT ABHÄNGIGKEITEN?????????????????????????????????????????????????) to the Host PC running Ubuntu Server
 OS. Enter following command in the command line to install the Jupyter Notebook Server:
 ```bash
 sudo bash ./install-jupyter.sh
@@ -111,13 +111,47 @@ The script will install following comoponents:
 6. JupyterLab (including Jupyter Server and Jupyter Notebook components)
 7. Paho MQTT Python Client
 
-The Jupyter Notebook Server ready to use with a browser for developing applications subscribing
-or publishing to CAN data topics or configuration topics and process the received sensor data.
+The Jupyter Notebook Server is ready to use with a browser for developing applications
+subscribing or publishing to CAN data topics or configuration topics and process the received
+sensor data.
 
 ## Usage
 
+### XML configuration file
+The configuration of the MQTT Bridges is described using the
+[Extensible Markup Language](https://www.w3.org/XML/) (XML).
+
+The provided XML configuration file applies for a CAN-to-MQTT Bridge.
+
+ABBILDUNG CAN-to-MQTT Bridge !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+It describes the CAN frames available on the bus which have to be transmitted on a MQTT topic.
+The topic on which the CAN frame will be published is automatically created using the
+following pattern:
+```bash
+DEVICE/MODULE/LOCATION/dataCAN
+```
+The part in `UPPER CASE` is specified in the XML configuration file. See provided configuration
+file for reference. These topics are customizeable by editing the configuration file and
+updating the MQTT Bridge with the new file. The subtopic `dataCAN` is fixed and serves as
+channel for CAN data traffic.
+
 ### MQTT Bridge
 To start the MQTT Bridge software run the following command in the directory XYZDIRECTORY?????????????????????????????????????????????????????????????????????????????????????????????????????
+
+#### Configuration update
+To update the configuration of an MQTT Bridge simply transmit the new XML configuration file on
+the configuration topic of the corresponding device. The device configuration topics have the
+following pattern:
+```bash
+DEVICE/config
+```
+Like the pattern for the CAN data topics the `UPPER CASE` part is specified in the configuration
+file and can be changed by editing the configuration file. The subtopic `config` is fixed and
+serves as configuration channel.
+
+**NOTE**:	The topic on which the new configuration file needs to be published is determined by
+			the value of the <DEVICE> tag in the old configuration file.
 
 ### Jupyter Notebook Server
 A Nginx Web Server is installed on the Host PC for SSL implementation. Nginx redirects the
@@ -127,9 +161,3 @@ The Jupyter Notebook Server is setup as a systemd service and will start automat
 system startup. To use the Jupyter Notebook Server open a browser and enter the domain
 associated with the IP adress of Ubuntu Server.
 In a local environment the local IP address of the Ubuntu Server can be used.
-
-
-## To-Do
-
-* CAN ID Filter for MQTT Bridges
-* Private MQTT Broker
