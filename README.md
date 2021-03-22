@@ -68,7 +68,7 @@ installation script for hosting the Jupyter Noteboooks from a Server is provided
 may be used to develop Python applications for analyzing, visualizing and recording the CAN
 data received using MQTT.
 
-## Prerequisites
+### Prerequisites
 
 For the **MQTT/CAN Bridge** component a Raspberry Pi with a CAN HAT is needed. Alternatively
 using a similar device running a Debian-based Linux distribution with a CAN interface is
