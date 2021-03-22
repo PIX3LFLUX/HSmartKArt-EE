@@ -12,51 +12,61 @@ rely on cloud-based services. Accordingly cross-domain communication is a demand
 future vehicle systems. Additionally a centralized, zone-oriented topology is key to modern
 E/E architectures. Core piece of this E/E architecture is the MQTT protocol.
 
-The HSmartKArt is an electrical powered recumbent bike based on the commercially available
-e.Go Kart. The functionality e.Go Kart will be expanded consecutively with driver assistance
-systems. The E/E architecture providing the foundation for modern driver assitance systems and
-other future vehicle systems is called HSmartKArt-EE and provided in this repository. It is
-a reference deployment of an more generic design for an modern E/E architecture that is
-briefly described in section 'MQTT-based E/E architecture'.
-
-## Disclaimer
-
-This software is not intended for use in public areas. It is just the subject of a study.
-
-
 ## Introduction
 
-This repository is a reference deployment of an E/E architecture for future vehicle systems.
-The MQTT/CAN Bridge publishes CAN data that will be distributed by the MQTT Broker. Receiving
-the CAN data is done by subscribing to the corresponding topic. Key components of this
-reference deployment are:
+The HSmartKArt is an electrical powered recumbent bike based on the commercially available
+e.Go Kart. With HSmartKArt-EE an E/E architecture is provided for this vehicle as the
+foundation for modern driver assitance systems and cloud-based services. It is a reference
+deployment of a more generic design for an modern E/E architecture developed in a student
+research project at the Karlsruhe University of Applied Sciences. Section 'MQTT-based E/E
+architecture reference deployment' describes the HSmartKArt-EE deployment.
 
-* **MQTT/CAN Bridge**: MQTT client running on a Raspberry Pi with a CAN HAT. This device
-  listens directly on the CAN bus. It grabs CAN frames and publishes them. So this is
-  essentially a MQTT/CAN Bridge.
+This repository contains two installation scripts. One installs a web server which hosts a
+JupyterLab environment for public access on an Ubunut Server OS. The other is for an
+Debian-based Embbeded Linux device like the Raspberry Pi and installs all components to
+program the Raspberry Pi with the firmware.
 
-* **MQTT Broker**: A public MQTT broker (broker.hivemq.com) handling the distribution of
-  messages throughout the connected clients.
-
-* **Ubuntu Server**: A Host PC running a Jupyter Notebook Web Server. This can be used as a
-  Workstation to visualize and analyze the CAN data.
-
+**NOTE**: Currently the firmware needs to be compiled manually using the gnu11 C compiler.
 
 ## MQTT-based E/E architecture
 
-Considering future vehicle systems following requirements are applying for E/E architectures:
+Considering future vehicle systems following requirements apply for E/E architectures:
 1. Modulare, centralized topology
 2. Efficient hardware and protocols
 3. Cross-domain communication
 4. Scalability
 
-Based on this criteria the following design has been elaborated:
+To meet this demands the following design has been elaborated:
 ![MQTT-based E/E architecture](docs/mqttee.png)
 
-The reference deployment using Raspberry Pis as MQTT Bridges, a Laptop as Ubuntu Server and
-the broker.hivemq.com as MQTT Broker has the following structure:
-![MQTT-based E/E architecture](docs/hsmartkartee.png)
+This is the generic design of an E/E architecture for future vehicle systems. Its modulare and
+centralized structure paired with the Bridges and the characteristics of the MQTT protocol
+compose an architecture suitable as a platform for sophisticated vehicle netzworks.
 
+For the purpose of prototyping a Raspberry Pi is used as an embedded platform. Also a public
+MQTT Broker provided by HiveMQ is used. The main components of the design are:
+* **CAN-to-MQTT Bridge**: This device is a Raspberry Pi with a CAN HAT. It listens directly on
+	the	CAN bus and grabs CAN frames. The frames can be processed and/or published. Which CAN
+	frames the device publishes is configured by an XML configuration file. So this device is
+	essentially a CAN-to-MQTT Bridge.
+
+* **MQTT Broker**: An implementation of a local but publicly accessable Broker as proposed in
+	the generic design is currently not included in this repository. Eclipse Mosquitto could be
+	used as a local Broker.	Unfortunately the configuration of all the network components to
+	make the Broker accessible from the outside of the local area network is currently not
+	finished and therefore not included in the repository. For the purpose of prototyping a
+	public MQTT Broker running on the HiveMQ platform is used for handling the distribution of
+	messages throughout the	connected clients. The public Broker is used to evaluate the global
+	access of the CAN data.
+
+![Reference deployment](docs/hsmartkartee.png)
+
+
+## Installation
+To install the MQTT Bridge on the Raspberry Pi an installation script is provided. Also an
+installation script for hosting the Jupyter Noteboooks from a Server is provided. The Server
+may be used to develop Python applications for analyzing, visualizing and recording the CAN
+data received using MQTT.
 
 ## Prerequisites
 
@@ -64,21 +74,14 @@ For the **MQTT/CAN Bridge** component a Raspberry Pi with a CAN HAT is needed. A
 using a similar device running a Debian-based Linux distribution with a CAN interface is
 possible. The CAN interface needs to be compatible with the SocketCAN Linux library.
 
-When using a public **MQTT Broker** like the one provided by HiveMQ (broker.hivemw.com) no
-setup is necessary. Only the URL of the Broker (and possibly the IP) is needed to establish a
-connection to the Broker.
+When using HiveMQ Cloud as public **MQTT Broker** an account is needed to create a HiveMQ Cloud
+cluster. After creating an account
 
 For the **Ubuntu Server** a Host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed.
 Also a public IPv4 address and/or a DNS with an A record for the public IP address needs to be
 available.
 **NOTE**:	When using Unitymedia Connect Box consider the setup of an Portmapper to avoid
 			errors due to the IP policy of Unitymedia (DS Lite).
-
-
-## Installation
-To install the MQTT Bridge on the Raspberry Pi an installation script is provided. Also an
-installation script for the Jupyter Noteboook Server running on a Host PC running the Ubuntu
-Server OS is provided.
 
 ### Installation script for MQTT Bridge
 For installation transfer the `install-mqtt-bridge.sh` file to the Raspberry Pi. To install
@@ -136,14 +139,15 @@ file for reference. These topics are customizeable by editing the configuration 
 updating the MQTT Bridge with the new file. The subtopic `dataCAN` is fixed and serves as
 channel for CAN data traffic.
 
-
 ### MQTT Bridge
 To start the MQTT Bridge software run the following command in the directory XYZDIRECTORY?????????????????????????????????????????????????????????????????????????????????????????????????????
 
 #### Configuration update
-To update the configuration of an MQTT Bridge simply transmit the new XML configuration file on
-the configuration topic of the corresponding device. The device configuration topics have the
-following pattern:
+To update the configuration of an MQTT Bridge simply publish the new XML configuration file on
+the configuration topic of the corresponding device. The device will automatically apply the
+received configuration file and resume to normal operation, transmitting the CAN frames
+specified in the new configuration file on the topic `DEVICE/MODULE/LOCATION/dataCAN`. The
+device configuration topics have the following pattern:
 ```bash
 DEVICE/config
 ```
@@ -162,3 +166,5 @@ The Jupyter Notebook Server is setup as a systemd service and will start automat
 system startup. To use the Jupyter Notebook Server open a browser and enter the domain
 associated with the IP adress of Ubuntu Server.
 In a local environment the local IP address of the Ubuntu Server can be used.
+
+ABBILDUNG: JupyterLab im Browser geöffnet, Fokus auf die Adresszeile. Text zur Abbildung in der erklärt wird, dass die Domain für den Ubuntu Server eingerichtet wurde.
