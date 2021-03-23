@@ -3,8 +3,6 @@
 **[Installation](#installation)** |
 **[Usage](#usage)** |
 
-<FRAME>
-
 # HSmartKArt-EE
 
 **HSmartKArt-EE** provides an approach for mastering the challenges of future vehicle systems.
