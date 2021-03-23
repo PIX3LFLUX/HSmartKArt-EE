@@ -4,10 +4,10 @@
 2. **[MQTT-based E/E architecture](#mqtt-based-ee-architecture)**
 3. **[Installation](#installation)**
 	1. **[Prerequisites](#prerequisites)**
-	2. **[Installation script for the MQTT Bridge](#installation-script-for-the-MQTT-Bridge)**
+	2. **[Installation script for the CAN-to-MQTT Bridge](#installation-script-for-the-can-to-mqtt-bridge)**
 	2. **[Installation script for the Server](#installation-script-for-the-server)**
 4. **[Usage](#usage)**
-	1. **[MQTT Bridge](#mqtt-bridge)**
+	1. **[CAN-to-MQTT Bridge](#mqtt-bridge)**
 		1. **[XML configuration file](#xml-configuration-file)**
 		2. **[Configuration update](#configuration-update)**
 	2. **[Server](#server)**
@@ -32,7 +32,7 @@ architecture reference deployment' describes the HSmartKArt-EE deployment.
 This repository contains two installation scripts. One installs a web server which hosts a
 JupyterLab environment for public access on an Ubunut Server OS. The other is for a
 Debian-based Embbeded Linux device like the Raspberry Pi and installs all components to
-run the MQTT Bridge software.
+run the software.
 
 
 ## MQTT-based E/E architecture
@@ -70,8 +70,8 @@ MQTT Broker provided by HiveMQ is used. The main components of the design are:
 
 
 ## Installation
-To install the MQTT Bridge on the Raspberry Pi an installation script is provided. Also an
-installation script for hosting the Jupyter Noteboooks from a server is provided. The server
+To install the CAN-to-MQTT Bridge on the Raspberry Pi an installation script is provided. Also
+an installation script for hosting the Jupyter Noteboooks from a server is provided. The server
 may be used to develop Python applications for analyzing, visualizing and recording the CAN
 data received with the Paho MQTT Python library.
 
@@ -83,10 +83,10 @@ are set appropriately:
 	service. Normally set by default.
 * `HOME`: the home directory of `USER`. This will be the installation directory and the default
 	directory when entering the JupyterLab environment. Normally set by default.
-* `MQTT_CLIENTID`: the MQTT client id used for the MQTT Bridge. This environment variable needs
-	to be set manually. To make sure the environment variable is set on system startup create a
-	script `mqttclientid.sh` in the directory `sudo nano /etc/profile.d/`. Copy following
-	code for that script:
+* `MQTT_CLIENTID`: the MQTT client id used for the CAN-to-MQTT Bridge. This environment
+	variable needs to be set manually. To make sure the environment variable is set on system
+	startup create a script `mqttclientid.sh` in the directory `sudo nano /etc/profile.d/`.
+	Copy following code into that script:
 	```bash
 	export MQTT_CLIENTID=MYID
 	```
@@ -107,8 +107,8 @@ fail because certbot cannot perform the http challenges.
 **NOTE**:	When using Unitymedia Connect Box consider the setup of a Portmapper to avoid
 			errors due to the IP policy of Unitymedia (Dual-Stack Lite).
 <server-domain.com>
-### Installation script for the MQTT Bridge
-To install the software for the MQTT Bridge on a Raspberry Pi simply enter the following
+### Installation script for the CAN-to-MQTT Bridge
+To install the software for the CAN-to-MQTT Bridge on a Raspberry Pi simply enter the following
 commands in the command line:
 ```bash
 sudo bash ./install-mqtt-bridge.sh
@@ -122,10 +122,10 @@ The script will execute following steps:
 6. Compile mqttee-bridge sources
 
 ### Installation script for the Server
-The installation script is interactive so be aware that user input is required at certain points of
-the installation. The certbot tool needs some user information to create a certificate and
-JupyterLab will ask for a password which will be used to login when using the browser to access
-the JupyterLab environment. Enter following command to install the Software:
+The installation script is interactive so be aware that user input is required at certain
+points of the installation. The certbot tool needs some user information to create a
+certificate and JupyterLab will ask for a password which will be used to login when using the
+browser to access the JupyterLab environment. Enter following command to install the Software:
 ```bash
 sudo bash ./install-server.sh
 ```
@@ -167,10 +167,10 @@ associated to a mqttee-bridge see section 'XML configuration file'.
 
 ## Usage
 
-### MQTT Bridge
-To start the MQTT Bridge software change into the installation directory (directory of the
-installation script). This is where the compiler will put the executable output file when the
-installation script is successcully completed. In this directory run the following command:
+### CAN-to-MQTT Bridge
+To start the CAN-to-MQTT Bridge software change into the installation directory (directory of
+the installation script). This is where the compiler will put the executable output file when
+the installation script is successcully completed. In this directory run the following command:
 ```bash
 ./mqttbridge -h
 ```
@@ -188,26 +188,26 @@ file `config.xml` applies for a CAN-to-MQTT Bridge. It has only one line. For ea
 Following figure shows the structure behind the configuration file.
 ![Configuration file structure](images/xmlconfig.png)
 
-The configuration file describes the device running the MQTT Bridge and the modules connected
-to it. The modules are the sensors or ECUs connected to the CAN bus. Each module is described
-by a name and its location on the vehicle. The section `<FRAME>` describes the mapping of the
-sensor signals onto the CAN frames of the module. A module may contain multiple `<FRAME>`
-sections. Each section describes a CAN frame that will be read from the bus and transmitted on
-a MQTT topic. The topic is automatically created using the following pattern:
+The configuration file describes the device running the CAN-to-MQTT Bridge and the modules
+connected to it. The modules are the sensors or ECUs connected to the CAN bus. Each module is
+described by a name and its location on the vehicle. The section `<FRAME>` describes the
+mapping of the sensor signals onto the CAN frames of the module. A module may contain multiple
+`<FRAME>` sections. Each section describes a CAN frame that will be read from the bus and
+transmitted on a MQTT topic. The topic is automatically created using the following pattern:
 ```bash
 DEVICE/MODULE/LOCATION/dataCAN
 ```
 The subtopics in UPPER CASE are specified in the XML configuration file. See provided
 configuration file for reference. These topics are customizable by editing the configuration
-file and updating the MQTT Bridge with the new file. The subtopic `dataCAN` is fixed and serves
-as channel for CAN data traffic.
+file and updating the CAN-to-MQTT Bridge with the new file. The subtopic `dataCAN` is fixed and
+serves as channel for CAN data traffic.
 
 #### Configuration update
-To update the configuration of an MQTT Bridge simply publish the new XML configuration file on
-the configuration topic of the corresponding device. The device will automatically apply the
-received configuration file and resume to normal operation, transmitting the CAN frames
-specified in the new configuration file on the topic `DEVICE/MODULE/LOCATION/dataCAN`. The
-device configuration topics have the following pattern:
+To update the configuration of an CAN-to-MQTT Bridge simply publish the new XML configuration
+file on the configuration topic of the corresponding device. The device will automatically
+apply the received configuration file and resume to normal operation, transmitting the CAN
+frames specified in the new configuration file on the topic `DEVICE/MODULE/LOCATION/dataCAN`.
+The device configuration topics have the following pattern:
 ```bash
 DEVICE/config
 ```
@@ -215,8 +215,8 @@ Like the pattern for the CAN data topics the UPPER CASE part is specified in the
 file and can be changed by editing the configuration file. The subtopic `config` is fixed and
 serves as configuration channel.
 
-**NOTE**:	The topic on which the new configuration file needs to be published is determined by
-			the value of the <DEVICE> tag in the old configuration file.
+**NOTE**:	The topic on which the new configuration file needs to be published is determined
+			by the value of the <DEVICE> tag in the old configuration file.
 
 ### Server
 To use the server for developing Python applications with JupyterLab open a browser and enter
