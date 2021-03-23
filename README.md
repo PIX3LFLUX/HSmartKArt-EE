@@ -148,7 +148,7 @@ include a `<placeholder>` which needs to be replaced with the appropriate value:
 Replace it with the domain or IP address on which the server is accessible, i.e.
 `mqttee-server.com`. 
 
-Save the modified template and run following command:
+Save the modified templates and run following command:
 ```bash
 sudo ln -s /etc/nginx/sites-available/jupyter.conf /etc/nginx/sites-enabled/
 ```
