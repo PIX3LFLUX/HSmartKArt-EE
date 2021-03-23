@@ -99,17 +99,17 @@ a Debian-based Linux distribution:
 
 When using HiveMQ platform as public **MQTT Broker** no additional setup is needed
 
-For the **Server** a Host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed.
-Also a public IPv4 address and/or a domain (DNS with an A record for the
-public IP address) needs to be available.
+For the **Server** a host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed. Also a
+public IPv4 address and/or a domain (DNS with an A record for the public IP address) needs to
+be associated with the server. Without public IPv4 or domain the certificate generation will
+fail because certbot cannot perform the http challenges.
 
 **NOTE**:	When using Unitymedia Connect Box consider the setup of a Portmapper to avoid
 			errors due to the IP policy of Unitymedia (Dual-Stack Lite).
-
+<server-domain.com>
 ### Installation script for the MQTT Bridge
-For installation transfer the `install-mqtt-bridge.sh` file to the Raspberry Pi. To install
-the software for the MQTT Bridge on a Raspberry Pi simply enter the following commands in the
-command line:
+To install the software for the MQTT Bridge on a Raspberry Pi simply enter the following
+commands in the command line:
 ```bash
 sudo bash ./install-mqtt-bridge.sh
 ```
@@ -122,8 +122,7 @@ The script will execute following steps:
 6. Compile mqttee-bridge sources
 
 ### Installation script for the Server
-For installation unpack the `jupyter.tar` file to the Host PC running Ubuntu Server OS. The
-installation script is interactive so be aware that user input is required at certain points of
+The installation script is interactive so be aware that user input is required at certain points of
 the installation. The certbot tool needs some user information to create a certificate and
 JupyterLab will ask for a password which will be used to login when using the browser to access
 the JupyterLab environment. Enter following command to install the Software:
@@ -139,19 +138,26 @@ The script will install following comoponents:
 6. JupyterLab (including Jupyter Server and Jupyter Notebook components)
 7. Paho MQTT Python client library
 
-After the installation script is finished the Nginx configuration needs to be edited for
-serving the Jupyter Notebooks. Therefore a template is provided in the directory `nginx` and
-moved to the `/etc/nginx/sites-available` directory. Edit the template `jupyter.conf` in the
-`/etc/nginx/sites-available` directory. This template includes placeholders for configuration
-parameters which need to be replaced with the appropriate values. Those placeholders are:
-* `<your-domain.com>`: the value for the configuration parameter `server_name`. Needs to be
-replaced with the domain or IP address on which the	server is accessible, i.e.
-`mqttee-server.com`.
+After the installation script is finished the Nginx and JupyterLab configurations need to be
+edited to serve Jupyter Notebooks. Therefore templates are provided in the directory
+`server/jupyter`. The `jupyter.conf` is moved to the `/etc/nginx/sites-available` directory
+during installation and `jupyter_lab_config.py` is moved to `~/.jupyter`. Edit the templates
+in the `/etc/nginx/sites-available` and `~/.jupyter` directory respectively. These templates
+include a `<placeholder>` which needs to be replaced with the appropriate value:
+* `<server-domain.com>`: the value associated with configuration parameter `server_name`.
+Replace it with the domain or IP address on which the server is accessible, i.e.
+`mqttee-server.com`. 
+
 Save the modified template and run following command:
 ```bash
 sudo ln -s /etc/nginx/sites-available/jupyter.conf /etc/nginx/sites-enabled/
 ```
-Now restart the Nginx service or reboot the system.
+Restart the Nginx and JupyterLab services
+```bash
+sudo systemctl restart nginx
+sudo systemctl restart jupyterlab
+```
+or reboot the system to apply the configuration.
 
 To use the Server simply open a browser and enter the Domain or IP address of the server. For
 developing applications use the Paho MQTT Python library to subscribe on or publishing to
