@@ -127,7 +127,7 @@ the installation. The certbot tool needs some user information to create a certi
 JupyterLab will ask for a password which will be used to login when using the browser to access
 the JupyterLab environment. Enter following command to install the Software:
 ```bash
-sudo bash ./install-jupyter.sh
+sudo bash ./install-server.sh
 ```
 The script will install following comoponents:
 1. Basic libraries and dependencies
