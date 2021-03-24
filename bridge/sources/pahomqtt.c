@@ -2,7 +2,7 @@
 * Company: University of Applied Science Karlsruhe
 * Author: Bruno Kempf
 *
-* Project Name: mqttee-xml-bridge
+* Project Name: mqtteebridge
 * File Name: pahomqtt.c
 * Create Date: 26.02.2021 13:12:26
 *
@@ -52,6 +52,7 @@ void onDisconnect(void* context, MQTTAsync_successData* response)
 void onConnectFailure(void* context, MQTTAsync_failureData* response)
 {
 	printf("Connection failed, rc %d\n", response ? response->code : 0);
+	exit(EXIT_FAILURE);
 }
 void onConnect(void* context, MQTTAsync_successData* response)
 {

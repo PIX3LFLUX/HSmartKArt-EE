@@ -2,7 +2,7 @@
 * Company: University of Applied Science Karlsruhe
 * Author: Bruno Kempf
 *
-* Project Name: mqttee-xml-bridge
+* Project Name: mqtteebridge
 * File Name: main.c
 * Create Date: 26.02.2021 13:12:26
 *
@@ -119,10 +119,10 @@ int main(int argc, char* argv[])
 			subscribetopic = optarg;
 			break;
 		case 'h':
-			printf("Following command options are supported: (Default values are in brackets [<default_value>])\n");
-			printf("-c CAN interface support:\n\tTakes true or false as argument. When a CAN interface is supported set to true.\n\t[false]\n");
-			printf("-b Domain or IP of the broker:\n\tTakes a domain or an IP to connect to a broker.\n\t[broker.hivemq.com]\n");
-			printf("-s Subscribe topic:\n\tAdditionally to the config topic the MQTT Bridge will subscribe on this topic.\n\t[MQTTBridges]\n");
+			printf("Usage:\n\t./mqttbridge [-c \"true\"|\"false\"] [-s \"SUBSCRIBE/TOPIC\"] [-b \"my-broker-domain.com\"|\"IP\"] [-h help]\n\n");
+			printf("-c CAN interface support. Takes true or false as argument. When a CAN interface is supported set to true.\n\tDefault: \"false\"\n");
+			printf("-b Domain or IP of the broker. Domain or IP to connect to a broker.\n\tDefault: \"broker.hivemq.com\"\n");
+			printf("-s Subscribe topic. Additionally to the config topic the MQTT Bridge will subscribe on this topic.\n\tDefault: \"MQTTBridges\"\n");
 			printf("-h Show this help\n");
 			exit(EXIT_SUCCESS);
 		case '?':
@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 				fprintf(stderr, "Unknown option '-%c'.\n", optopt);
 			else
 				fprintf(stderr, "Unknown option character '\\x%x'.\n", optopt);
-			return 1;
+			exit(EXIT_FAILURE);
 		default:
 			exit(EXIT_FAILURE); // See https://stackoverflow.com/questions/397075/what-is-the-difference-between-exit-and-abort
 		}
@@ -143,7 +143,7 @@ int main(int argc, char* argv[])
 		printf("Non-option argument %s\n", argv[i]);
 	}
 
-	
+
 
 	// ---------------------- //
 	// --- Initialization --- //
@@ -154,7 +154,7 @@ int main(int argc, char* argv[])
 
 	disconnected = false;
 	connected = false;
-	
+
 	char* clientid = getenv("MQTT_CLIENTID");
 
 	uint8_t* dataptr = NULL;

@@ -2,7 +2,7 @@
 * Company: University of Applied Science Karlsruhe
 * Author: Bruno Kempf
 *
-* Project Name: mqttee-xml-bridge
+* Project Name: mqtteebridge
 * File Name: xmlconfig.c
 * Create Date: 26.02.2021 13:12:26
 *
