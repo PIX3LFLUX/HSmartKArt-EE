@@ -2,8 +2,8 @@
 
 1. **[Introduction](#introduction)**
 2. **[MQTT-based E/E architecture reference deployment](#mqtt-based-ee-architecture-reference-deployment)**
-	1. Overview generic design
-	2. Reference deployment
+	1. **[Overview generic design](#overview-generic-design)**
+	2. **[Reference deployment](#reference-deployment)**
 3. **[Installation](#installation)**
 	1. **[Prerequisites](#prerequisites)**
 	2. **[Installation script for the CAN-to-MQTT Bridge](#installation-script-for-the-can-to-mqtt-bridge)**
