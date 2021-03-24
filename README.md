@@ -89,11 +89,8 @@ are set appropriately:
 	directory when entering the JupyterLab environment. Normally set by default.
 * `MQTT_CLIENTID`: the MQTT client id used for the CAN-to-MQTT Bridge. This environment
 	variable needs to be set manually. To make sure the environment variable is set on system
-	startup create a script `mqttclientid.sh` in the directory `sudo nano /etc/profile.d/`.
-	Copy following code into that script:
-	```bash
-	export MQTT_CLIENTID=MYID
-	```
+	startup the script `mqttclientid.sh` is placed in the directory `/etc/profile.d/` during
+	installation.
 
 For the **CAN-to-MQTT Bridge** component a Raspberry Pi is needed, CAN HAT optional. With some
 small fixes in the installation script can be used for similar devices with a CAN interface
