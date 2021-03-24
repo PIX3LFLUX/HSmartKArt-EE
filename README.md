@@ -1,7 +1,9 @@
 # HSmartKArt-EE
 
 1. **[Introduction](#introduction)**
-2. **[MQTT-based E/E architecture](#mqtt-based-ee-architecture)**
+2. **[MQTT-based E/E architecture reference deployment](#mqtt-based-ee-architecture-reference-deployment)**
+	1. Overview of the generic design
+	2. Reference deployment
 3. **[Installation](#installation)**
 	1. **[Prerequisites](#prerequisites)**
 	2. **[Installation script for the CAN-to-MQTT Bridge](#installation-script-for-the-can-to-mqtt-bridge)**
@@ -13,42 +15,42 @@
 	2. **[Server](#server)**
 5. **[To-Do](#to-do)**
 
-**HSmartKArt-EE** provides an approach for mastering the challenges of future vehicle systems.
-Connected Cars, autonomous driving and other functions that will shape the future of cars all
-rely on cloud-based services. Accordingly cross-domain communication is a demanding topic for
-future vehicle systems. Additionally a centralized, zone-oriented topology is key to modern
-E/E architectures. Core piece of this E/E architecture is the MQTT protocol.
-
 
 ## Introduction
 
 The HSmartKArt is an electrical powered recumbent bike based on the commercially available
-e.Go Kart. With HSmartKArt-EE an E/E architecture is provided for this vehicle as the
-foundation for modern driver assitance systems and cloud-based services. It is a reference
-deployment of a more generic design for a modern E/E architecture developed in a student
-research project at the Karlsruhe University of Applied Sciences. Section 'MQTT-based E/E
-architecture reference deployment' describes the HSmartKArt-EE deployment.
+e.Go Kart supplemented by student research projects on driver assistance systems. With
+**HSmartKArt-EE** an E/E architecture is provided for this vehicle as the foundation for
+modern driver assistance systems and cloud-based services.  
+It is a reference deployment of a more generic design for a modern E/E architecture developed
+in a student research project at the Karlsruhe University of Applied Sciences. Section
+'MQTT-based E/E architecture reference deployment' describes the HSmartKArt-EE deployment and
+gives a brief overview of the more generic E/E architecture design.
 
-This repository contains two installation scripts. One installs a web server which hosts a
-JupyterLab environment for public access on an Ubunut Server OS. The other is for a
-Debian-based Embbeded Linux device like the Raspberry Pi and installs all components to
-run the software.
+This repository contains two directories, each providing a installation script. One installs
+a web server which hosts a JupyterLab environment for public access on an Ubunut Server OS.
+The other is for a Debian-based Embbeded Linux device like the Raspberry Pi and installs all
+components to run the software for a CAN-to-MQTT Bridge.
 
 
-## MQTT-based E/E architecture
+## MQTT-based E/E architecture reference deployment
 
-Considering future vehicle systems following requirements apply for E/E architectures:
+### Overview generic design
+
+Considering future vehicle systems following general requirements apply for E/E
+architectures:
 1. Modulare, centralized topology
 2. Efficient hardware and protocols
 3. Cross-domain communication
 4. Scalability
 
 To meet this demands the following design has been elaborated:
-![MQTT-based E/E architecture](images/mqttee.png)
+	![MQTT-based E/E architecture](images/mqttee.png)
 
-This is the generic design of an E/E architecture for future vehicle systems. Its modulare and
-centralized structure paired with the Bridges and the characteristics of the MQTT protocol
-compose an architecture suitable as a platform for sophisticated vehicle netzworks.
+This is the generic design of an E/E architecture based on the MQTT protocol for future
+vehicle systems. Its modulare and centralized structure paired with the Bridges and the
+characteristics of the MQTT protocol compose an architecture suitable as a vehicle platform
+for sophisticated networks. Global access of the data enables cloud-based services.
 
 For the purpose of prototyping a Raspberry Pi is used as an embedded platform. Also a public
 MQTT Broker provided by HiveMQ is used. The main components of the design are:
@@ -185,8 +187,8 @@ The configuration of the MQTT Bridges is described using the
 file `config.xml` applies for a CAN-to-MQTT Bridge. It has only one line. For easy reading the
 `config_formatted.xml` file is provided.
 
-Following figure shows the structure behind the configuration file.
-![Configuration file structure](images/xmlconfig.png)
+Following figure shows the structure behind the configuration file:
+	![Configuration file structure](images/xmlconfig.png)
 
 The configuration file describes the device running the CAN-to-MQTT Bridge and the modules
 connected to it. The modules are the sensors or ECUs connected to the CAN bus. Each module is
@@ -225,7 +227,7 @@ the Ubuntu Server can be used.
 
 The login prompt when entering the server domain or IP in a browser; in this case a domain has
 been set up for the server:
-![JupyterLab login prompt](images/jupyterlab_login.png)
+	![JupyterLab login prompt](images/jupyterlab_login.png)
 
 This is the JupyterLab GUI:
 ![JupyterLab login prompt](images/jupyterlab_gui.png)
