@@ -44,7 +44,7 @@ architectures:
 3. Cross-domain communication
 4. Scalability
 
-To meet this demands the following design has been elaborated:
+To meet this demands the following design has been elaborated:  
 	![MQTT-based E/E architecture](images/mqttee.png)
 
 This is the generic design of an E/E architecture based on the MQTT protocol for future
@@ -69,7 +69,7 @@ MQTT Broker provided by HiveMQ is used. The main components of the design are:
 	for handling the distribution of messages throughout the connected clients. The public
 	Broker is used to evaluate the global access of the CAN data.
 
-![Reference deployment](images/hsmartkartee.png)
+	![Reference deployment](images/hsmartkartee.png)
 
 
 ## Installation
@@ -188,7 +188,7 @@ The configuration of the MQTT Bridges is described using the
 file `config.xml` applies for a CAN-to-MQTT Bridge. It has only one line. For easy reading the
 `config_formatted.xml` file is provided.
 
-Following figure shows the structure behind the configuration file:
+Following figure shows the structure behind the configuration file:  
 	![Configuration file structure](images/xmlconfig.png)
 
 The configuration file describes the device running the CAN-to-MQTT Bridge and the modules
@@ -227,11 +227,11 @@ the domain or IP address of the Ubuntu Server. In a local environment the local 
 the Ubuntu Server can be used.
 
 The login prompt when entering the server domain or IP in a browser; in this case a domain has
-been set up for the server:
+been set up for the server:  
 	![JupyterLab login prompt](images/jupyterlab_login.png)
 
-This is the JupyterLab GUI:
-![JupyterLab login prompt](images/jupyterlab_gui.png)
+This is the JupyterLab GUI:  
+	![JupyterLab login prompt](images/jupyterlab_gui.png)
 
 ## To-Do
 * Develop dedicated hardware for MQTT Bridges
