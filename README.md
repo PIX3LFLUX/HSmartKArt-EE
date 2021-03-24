@@ -99,7 +99,7 @@ For the **MQTT/CAN Bridge** component a Raspberry Pi is needed, CAN HAT optional
 small fixes in the installation script can be used for similar devices with a CAN interface
 running a Debian-based Linux distribution:
 * CAN Interface Setup needs to be modified according to the used device
-* The CAN interface needs to be compatible with the SocketCAN Linux library
+* The CAN interface needs to be compatible with the SocketCAN Linux library  
 For the **MQTT Broker** no additional setup is needed when using the HiveMQ platform.
 
 For the **Server** a host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed. Also a
