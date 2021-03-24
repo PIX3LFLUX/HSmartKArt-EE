@@ -3,7 +3,7 @@
 1. **[Introduction](#introduction)**
 2. **[MQTT-based E/E architecture reference deployment](#mqtt-based-ee-architecture-reference-deployment)**
 	1. **[Overview generic design](#overview-generic-design)**
-	2. **[Reference deployment](#reference-deployment)**
+	2. **[Reference deployment](#reference-deployment)
 3. **[Installation](#installation)**
 	1. **[Prerequisites](#prerequisites)**
 	2. **[Installation script for the CAN-to-MQTT Bridge](#installation-script-for-the-can-to-mqtt-bridge)**
@@ -44,20 +44,19 @@ architectures:
 3. Cross-domain communication
 4. Scalability
 
-To meet this demands the following design has been elaborated:  
+To meet this demands the following design has been elaborated:
 	![MQTT-based E/E architecture](images/mqttee.png)
 
 This is the generic design of an E/E architecture based on the MQTT protocol for future
-vehicle systems. All components are located on the vehicle except the cloud devices of course.
-Its modulare and centralized structure paired with the Bridges and the characteristics of the
-MQTT protocol compose an architecture suitable as a vehicle platform for sophisticated
-networks. Global access of the data enables cloud-based services.
+vehicle systems. Its modulare and centralized structure paired with the Bridges and the
+characteristics of the MQTT protocol compose an architecture suitable as a vehicle platform
+for sophisticated networks. Global access of the data enables cloud-based services.
 
 ### Reference deployment
 For the purpose of prototyping a Raspberry Pi is used as an embedded platform. Also a public
 MQTT Broker provided by HiveMQ is used. The main components of the design are:
 * **CAN-to-MQTT Bridge**: This device is a Raspberry Pi with a CAN HAT. It listens directly on
-	the CAN bus and grabs CAN frames. The frames can be processed and/or published. Which CAN
+	the	CAN bus and grabs CAN frames. The frames can be processed and/or published. Which CAN
 	frames the device publishes is configured by a XML configuration file. So this device is
 	essentially a CAN-to-MQTT Bridge.
 
@@ -70,7 +69,7 @@ MQTT Broker provided by HiveMQ is used. The main components of the design are:
 	for handling the distribution of messages throughout the connected clients. The public
 	Broker is used to evaluate the global access of the CAN data.
 
-	![Reference deployment](images/hsmartkartee.png)
+![Reference deployment](images/hsmartkartee.png)
 
 
 ## Installation
@@ -84,9 +83,9 @@ data received with the Paho MQTT Python library.
 For correct execution of the installation scripts make sure the following environment variables
 are set appropriately:
 * `USER`: the system user (with sudo privileges) that will be the owner of the JupyterLab
-	service. Normally set by default.
+	service. Normally set by system.
 * `HOME`: the home directory of `USER`. This will be the installation directory and the default
-	directory when entering the JupyterLab environment. Normally set by default.
+	directory when entering the JupyterLab environment. Normally set by system.
 * `MQTT_CLIENTID`: the MQTT client id used for the CAN-to-MQTT Bridge. This environment
 	variable needs to be set manually. To make sure the environment variable is set on system
 	startup the script `mqttclientid.sh` is placed in the directory `/etc/profile.d/` during
@@ -98,15 +97,17 @@ running a Debian-based Linux distribution:
 * CAN Interface Setup needs to be modified according to the used device
 * The CAN interface needs to be compatible with the SocketCAN Linux library
 
-For the **MQTT Broker** no additional setup is needed when using the HiveMQ platform.
+For the MQTT Broker no additional setup is needed when using the HiveMQ platform.
 
 For the **Server** a host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed. Also a
 public IPv4 address and/or a domain (DNS with an A record for the public IP address) needs to
 be associated with the server. Without public IPv4 or domain the certificate generation will
-fail because certbot cannot perform the http challenges.
-
+fail because certbot cannot perform the http challenges.  
 **NOTE**:	When using Unitymedia Connect Box consider the setup of a Portmapper to avoid
-		errors due to the IP policy of Unitymedia (Dual-Stack Lite).
+			errors due to the IP policy of Unitymedia (Dual-Stack Lite).
+
+**NOTE**:	The script will not update the software after installation. So updating the Paho
+			MQTT C library or the MQTT_CLIENTID environment variable needs to be done manually.
 
 ### Installation script for the CAN-to-MQTT Bridge
 To install the software for the CAN-to-MQTT Bridge on a Raspberry Pi simply enter the following
@@ -187,7 +188,7 @@ The configuration of the CAN-to-MQTT Bridges is described using the
 file `config.xml` applies for a CAN-to-MQTT Bridge. It has only one line. For easy reading the
 `config_formatted.xml` file is provided.
 
-Following figure shows the structure behind the configuration file:  
+Following figure shows the structure behind the configuration file:
 	![Configuration file structure](images/xmlconfig.png)
 
 The configuration file describes the device running the CAN-to-MQTT Bridge and the modules
@@ -226,11 +227,11 @@ the domain or IP address of the Ubuntu Server. In a local environment the local 
 the Ubuntu Server can be used.
 
 The login prompt when entering the server domain or IP in a browser; in this case a domain has
-been set up for the server:  
+been set up for the server:
 	![JupyterLab login prompt](images/jupyterlab_login.png)
 
-This is the JupyterLab GUI:  
-	![JupyterLab login prompt](images/jupyterlab_gui.png)
+This is the JupyterLab GUI:
+![JupyterLab login prompt](images/jupyterlab_gui.png)
 
 ## To-Do
 * Develop dedicated hardware for MQTT Bridges
