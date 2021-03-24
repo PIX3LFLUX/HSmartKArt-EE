@@ -95,13 +95,12 @@ are set appropriately:
 	export MQTT_CLIENTID=MYID
 	```
 
-For the **MQTT/CAN Bridge** component a Raspberry Pi with a CAN HAT is needed. With some small
-fixes in the installation script can be used for similar devices with a CAN interface running
-a Debian-based Linux distribution:
+For the **MQTT/CAN Bridge** component a Raspberry Pi is needed, CAN HAT optional. With some
+small fixes in the installation script can be used for similar devices with a CAN interface
+running a Debian-based Linux distribution:
 * CAN Interface Setup needs to be modified according to the used device
 * The CAN interface needs to be compatible with the SocketCAN Linux library
-
-When using HiveMQ platform as public **MQTT Broker** no additional setup is needed
+For the **MQTT Broker** no additional setup is needed when using the HiveMQ platform.
 
 For the **Server** a host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed. Also a
 public IPv4 address and/or a domain (DNS with an A record for the public IP address) needs to
@@ -109,8 +108,8 @@ be associated with the server. Without public IPv4 or domain the certificate gen
 fail because certbot cannot perform the http challenges.
 
 **NOTE**:	When using Unitymedia Connect Box consider the setup of a Portmapper to avoid
-			errors due to the IP policy of Unitymedia (Dual-Stack Lite).
-<server-domain.com>
+		errors due to the IP policy of Unitymedia (Dual-Stack Lite).
+
 ### Installation script for the CAN-to-MQTT Bridge
 To install the software for the CAN-to-MQTT Bridge on a Raspberry Pi simply enter the following
 commands in the command line:
