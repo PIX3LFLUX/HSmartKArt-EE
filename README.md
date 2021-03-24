@@ -2,7 +2,7 @@
 
 1. **[Introduction](#introduction)**
 2. **[MQTT-based E/E architecture reference deployment](#mqtt-based-ee-architecture-reference-deployment)**
-	1. Overview of the generic design
+	1. Overview generic design
 	2. Reference deployment
 3. **[Installation](#installation)**
 	1. **[Prerequisites](#prerequisites)**
@@ -52,6 +52,7 @@ vehicle systems. Its modulare and centralized structure paired with the Bridges 
 characteristics of the MQTT protocol compose an architecture suitable as a vehicle platform
 for sophisticated networks. Global access of the data enables cloud-based services.
 
+### Reference deployment
 For the purpose of prototyping a Raspberry Pi is used as an embedded platform. Also a public
 MQTT Broker provided by HiveMQ is used. The main components of the design are:
 * **CAN-to-MQTT Bridge**: This device is a Raspberry Pi with a CAN HAT. It listens directly on
