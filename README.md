@@ -214,8 +214,9 @@ file and updating the CAN-to-MQTT Bridge with the new file. The subtopic `dataCA
 serves as channel for CAN data traffic. For example, to configure the bridge to publish the
 CAN data on the topic `RPI/ULTRASONIC/REAR/dataCAN` set/modify the appropriate values for the
 XML tags:
-* `<DEVICE-NAME>RPI</DEVICE-NAME>`, `<MODULE-NAME>ULTRASONIC</MODULE-NAME>` and
-`<LOCATION>REAR</LOCATION>`
+* `<DEVICE-NAME>RPI</DEVICE-NAME>`
+* `<MODULE-NAME>ULTRASONIC</MODULE-NAME>`
+* `<LOCATION>REAR</LOCATION>`
 
 #### Configuration update
 To update the configuration of an CAN-to-MQTT Bridge simply publish the new XML configuration
