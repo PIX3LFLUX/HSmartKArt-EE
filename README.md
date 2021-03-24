@@ -113,11 +113,11 @@ For the **Server** a host PC (or Laptop) running the Ubuntu Server 20.04 OS is n
 public IPv4 address and/or a domain (DNS with an A record for the public IP address) needs to
 be associated with the server. Without public IPv4 or domain the certificate generation will
 fail because certbot cannot perform the http challenges.  
-**NOTE**:	When using Unitymedia Connect Box consider the setup of a Portmapper to avoid
-			errors due to the IP policy of Unitymedia (Dual-Stack Lite).
+**NOTE**: When using Unitymedia Connect Box consider the setup of a Portmapper to avoid errors
+due to the IP policy of Unitymedia (Dual-Stack Lite).
 
-**NOTE**:	The script will not update the software after installation. So updating the Paho
-			MQTT C library or the MQTT_CLIENTID environment variable needs to be done manually.
+**NOTE**: The script will not update the software after installation. So updating the Paho MQTT
+C library or the MQTT_CLIENTID environment variable needs to be done manually.
 
 ### Installation script for the CAN-to-MQTT Bridge
 To install the software for the CAN-to-MQTT Bridge on a Raspberry Pi simply enter the following
@@ -201,16 +201,21 @@ Following figure shows the structure behind the configuration file:
 The configuration file describes the device running the CAN-to-MQTT Bridge and the modules
 connected to it. The modules are the sensors or ECUs connected to the CAN bus. Each module is
 described by a name and its location on the vehicle. The section `<FRAME>` describes the
-mapping of the sensor signals onto the CAN frames of the module. A module may contain multiple
-`<FRAME>` sections. Each section describes a CAN frame that will be read from the bus and
-transmitted on a MQTT topic. The topic is automatically created using the following pattern:
+mapping of the sensor signals into the CAN frames of the module. A module may contain multiple
+`<FRAME>` sections. Each section describes the mapping of a CAN frame that will be read from
+the bus and transmitted on a MQTT topic. The topic is automatically created using the following
+pattern:
 ```bash
 DEVICE/MODULE/LOCATION/dataCAN
 ```
 The subtopics in UPPER CASE are specified in the XML configuration file. See provided
 configuration file for reference. These topics are customizable by editing the configuration
 file and updating the CAN-to-MQTT Bridge with the new file. The subtopic `dataCAN` is fixed and
-serves as channel for CAN data traffic.
+serves as channel for CAN data traffic. For example, to configure the bridge to publish the
+CAN data on the topic `RPI/ULTRASONIC/REAR/dataCAN` set/modify the appropriate values for the
+XML tags:
+* `<DEVICE-NAME>RPI</DEVICE-NAME>`, `<MODULE-NAME>ULTRASONIC</MODULE-NAME>` and
+`<LOCATION>REAR</LOCATION>`
 
 #### Configuration update
 To update the configuration of an CAN-to-MQTT Bridge simply publish the new XML configuration
@@ -225,8 +230,8 @@ Like the pattern for the CAN data topics the UPPER CASE part is specified in the
 file and can be changed by editing the configuration file. The subtopic `config` is fixed and
 serves as configuration channel.
 
-**NOTE**:	The topic on which the new configuration file needs to be published is determined
-			by the value of the <DEVICE> tag in the old configuration file.
+**NOTE**: The topic on which the new configuration file needs to be published is determined by
+the value of the XML tag `<DEVICE>` in the old configuration file.
 
 ### Server
 To use the server for developing Python applications with JupyterLab open a browser and enter
