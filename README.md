@@ -212,8 +212,8 @@ The subtopics in UPPER CASE are specified in the XML configuration file. See pro
 configuration file for reference. These topics are customizable by editing the configuration
 file and updating the CAN-to-MQTT Bridge with the new file. The subtopic `dataCAN` is fixed and
 serves as channel for CAN data traffic. For example, to configure the bridge to publish the
-CAN data on the topic `RPI/ULTRASONIC/REAR/dataCAN` set/modify the appropriate values for the
-XML tags:
+CAN data on the topic `RPI/ULTRASONIC/REAR/dataCAN` modify the corresponding values for the XML
+tags:
 * `<DEVICE-NAME>RPI</DEVICE-NAME>`
 * `<MODULE-NAME>ULTRASONIC</MODULE-NAME>`
 * `<LOCATION>REAR</LOCATION>`
