@@ -48,15 +48,16 @@ To meet this demands the following design has been elaborated:
 	![MQTT-based E/E architecture](images/mqttee.png)
 
 This is the generic design of an E/E architecture based on the MQTT protocol for future
-vehicle systems. Its modulare and centralized structure paired with the Bridges and the
-characteristics of the MQTT protocol compose an architecture suitable as a vehicle platform
-for sophisticated networks. Global access of the data enables cloud-based services.
+vehicle systems. All components are located on the vehicle except the cloud devices of course.
+Its modulare and centralized structure paired with the Bridges and the characteristics of the
+MQTT protocol compose an architecture suitable as a vehicle platform for sophisticated
+networks. Global access of the data enables cloud-based services.
 
 ### Reference deployment
 For the purpose of prototyping a Raspberry Pi is used as an embedded platform. Also a public
 MQTT Broker provided by HiveMQ is used. The main components of the design are:
 * **CAN-to-MQTT Bridge**: This device is a Raspberry Pi with a CAN HAT. It listens directly on
-	the	CAN bus and grabs CAN frames. The frames can be processed and/or published. Which CAN
+	the CAN bus and grabs CAN frames. The frames can be processed and/or published. Which CAN
 	frames the device publishes is configured by a XML configuration file. So this device is
 	essentially a CAN-to-MQTT Bridge.
 
