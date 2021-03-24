@@ -182,7 +182,7 @@ To operate as CAN-to-MQTT Bridge run
 ```
 
 #### XML configuration file
-The configuration of the MQTT Bridges is described using the
+The configuration of the CAN-to-MQTT Bridges is described using the
 [Extensible Markup Language (XML)](https://www.w3.org/XML/). The provided XML configuration
 file `config.xml` applies for a CAN-to-MQTT Bridge. It has only one line. For easy reading the
 `config_formatted.xml` file is provided.
