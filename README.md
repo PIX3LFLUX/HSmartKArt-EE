@@ -171,11 +171,12 @@ associated to a mqttee-bridge see section 'XML configuration file'.
 ### CAN-to-MQTT Bridge
 To start the CAN-to-MQTT Bridge software change into the installation directory (directory of
 the installation script). This is where the compiler will put the executable output file when
-the installation script is successcully completed. In this directory run the following command:
+the installation script is successcully completed. In this directory run the following command
+to print a description of the available options:
 ```bash
 ./mqttbridge -h
 ```
-This will print a description of the available options. To operate as CAN-to-MQTT Bridge run
+To operate as CAN-to-MQTT Bridge run
 ```bash
 ./mqttbridge -c "true"
 ```
