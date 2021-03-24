@@ -95,7 +95,7 @@ are set appropriately:
 	export MQTT_CLIENTID=MYID
 	```
 
-For the **MQTT/CAN Bridge** component a Raspberry Pi is needed, CAN HAT optional. With some
+For the **CAN-to-MQTT Bridge** component a Raspberry Pi is needed, CAN HAT optional. With some
 small fixes in the installation script can be used for similar devices with a CAN interface
 running a Debian-based Linux distribution:
 * CAN Interface Setup needs to be modified according to the used device
