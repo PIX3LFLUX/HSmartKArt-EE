@@ -46,7 +46,7 @@ architectures:
 
 To meet this demands the following design has been elaborated:
 
-![MQTT-based E/E architecture](images/mqttee.png)
+![MQTT-based E/E architecture](images/mqttee-design.png)
 
 This is the generic design of an E/E architecture based on the MQTT protocol for future
 vehicle systems. All components are located on the vehicle except ofr the cloud devices.Its
