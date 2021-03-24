@@ -3,7 +3,7 @@
 1. **[Introduction](#introduction)**
 2. **[MQTT-based E/E architecture reference deployment](#mqtt-based-ee-architecture-reference-deployment)**
 	1. **[Overview generic design](#overview-generic-design)**
-	2. **[Reference deployment](#reference-deployment)
+	2. **[Reference deployment](#reference-deployment)**
 3. **[Installation](#installation)**
 	1. **[Prerequisites](#prerequisites)**
 	2. **[Installation script for the CAN-to-MQTT Bridge](#installation-script-for-the-can-to-mqtt-bridge)**
@@ -45,12 +45,13 @@ architectures:
 4. Scalability
 
 To meet this demands the following design has been elaborated:
-	![MQTT-based E/E architecture](images/mqttee.png)
+![MQTT-based E/E architecture](images/mqttee.png)
 
 This is the generic design of an E/E architecture based on the MQTT protocol for future
-vehicle systems. Its modulare and centralized structure paired with the Bridges and the
-characteristics of the MQTT protocol compose an architecture suitable as a vehicle platform
-for sophisticated networks. Global access of the data enables cloud-based services.
+vehicle systems. All components are located on the vehicle except ofr the cloud devices.Its
+modulare and centralized structure, paired with the Bridges and the characteristics, of the
+MQTT protocol compose an architecture suitable as a vehicle platform for sophisticated
+networks. Global access of the data enables cloud-based services.
 
 ### Reference deployment
 For the purpose of prototyping a Raspberry Pi is used as an embedded platform. Also a public
@@ -78,6 +79,14 @@ an installation script for hosting the Jupyter Noteboooks from a server is provi
 may be used to develop Python applications for analyzing, visualizing and recording the CAN
 data received with the Paho MQTT Python library.
 
+The installation scripts are interactive so be aware that user input is required at certain
+points of the installation. For the CAN-to-MQTT Bridge installation script following user input
+is required:
+* MQTT Client ID
+For the Server installtion script follwoing user input is required:
+* The certbot tool needs some user information to create a certificate
+* Password for JupyterLab
+
 ### Prerequisites
 
 For correct execution of the installation scripts make sure the following environment variables
@@ -97,7 +106,7 @@ running a Debian-based Linux distribution:
 * CAN Interface Setup needs to be modified according to the used device
 * The CAN interface needs to be compatible with the SocketCAN Linux library
 
-For the MQTT Broker no additional setup is needed when using the HiveMQ platform.
+For the **MQTT Broker** no additional setup is needed when using the HiveMQ platform.
 
 For the **Server** a host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed. Also a
 public IPv4 address and/or a domain (DNS with an A record for the public IP address) needs to
@@ -124,10 +133,7 @@ The script will execute following steps:
 6. Compile mqttee-bridge sources
 
 ### Installation script for the Server
-The installation script is interactive so be aware that user input is required at certain
-points of the installation. The certbot tool needs some user information to create a
-certificate and JupyterLab will ask for a password which will be used to login when using the
-browser to access the JupyterLab environment. Enter following command to install the Software:
+To install the server software on a Host PC running Ubuntu Server OS enter following command:
 ```bash
 sudo bash ./install-server.sh
 ```
@@ -146,9 +152,8 @@ edited to serve Jupyter Notebooks. Therefore templates are provided in the direc
 during installation and `jupyter_lab_config.py` is moved to `~/.jupyter`. Edit the templates
 in the `/etc/nginx/sites-available` and `~/.jupyter` directory respectively. These templates
 include a `<placeholder>` which needs to be replaced with the appropriate value:
-* `<server-domain.com>`: the value associated with configuration parameter `server_name`.
-Replace it with the domain or IP address on which the server is accessible, i.e.
-`mqttee-server.com`. 
+* `<server-domain.com>`: Replace it with the domain or IP address on which the server is
+accessible, i.e. `mqttee-server.com`. 
 
 Save the modified templates and run following command:
 ```bash
@@ -163,17 +168,17 @@ or reboot the system to apply the configuration.
 
 To use the Server simply open a browser and enter the Domain or IP address of the server. For
 developing applications use the Paho MQTT Python library to subscribe on or publishing to
-the topics associated to the mqttee-bridge. For more information on the specification of topics
-associated to a mqttee-bridge see section 'XML configuration file'.
+the topics associated to the CAN-to-MQTT Bridge. For more information on the specification of
+topics associated to a device see section 'XML configuration file'.
 
 
 ## Usage
 
 ### CAN-to-MQTT Bridge
-To start the CAN-to-MQTT Bridge software change into the installation directory (directory of
-the installation script). This is where the compiler will put the executable output file when
-the installation script is successcully completed. In this directory run the following command
-to print a description of the available options:
+To start the CAN-to-MQTT Bridge software change into the installation directory (directory
+where the install-mqtt-bridge.sh script has been executed). This is where the compiler will put
+the executable output file if the installation script is successcully completed. In this
+directory run the following command to print a description of the available options:
 ```bash
 ./mqttbridge -h
 ```
@@ -189,7 +194,7 @@ file `config.xml` applies for a CAN-to-MQTT Bridge. It has only one line. For ea
 `config_formatted.xml` file is provided.
 
 Following figure shows the structure behind the configuration file:
-	![Configuration file structure](images/xmlconfig.png)
+![Configuration file structure](images/xmlconfig.png)
 
 The configuration file describes the device running the CAN-to-MQTT Bridge and the modules
 connected to it. The modules are the sensors or ECUs connected to the CAN bus. Each module is
@@ -228,7 +233,7 @@ the Ubuntu Server can be used.
 
 The login prompt when entering the server domain or IP in a browser; in this case a domain has
 been set up for the server:
-	![JupyterLab login prompt](images/jupyterlab_login.png)
+![JupyterLab login prompt](images/jupyterlab_login.png)
 
 This is the JupyterLab GUI:
 ![JupyterLab login prompt](images/jupyterlab_gui.png)
