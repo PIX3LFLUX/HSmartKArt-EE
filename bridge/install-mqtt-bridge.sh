@@ -58,7 +58,7 @@ export MQTTEE_PAHO_SETUP=done
 EOT
 
 else
-	echo -e "Paho MQTT C library already installed\n"
+	echo -e "Paho MQTT C library already installed. Skipping to next Installation step\n"
 fi
 
 # --- Install Mosquitto MQTT Broker --- #
@@ -89,7 +89,7 @@ export MQTTEE_PICAN2_SETUP=done
 EOT
 
 else
-	echo -e "CAN interface already set up"
+	echo -e "CAN interface already set up. Skipping to next Installation step\n"
 fi
 
 # --- Install SocketCAN --- #
@@ -108,7 +108,7 @@ export MQTT_CLIENTID=$ID
 EOT
 
 else
-	echo -e "MQTT_CLIENTID environment variable already set"
+	echo -e "MQTT_CLIENTID environment variable setup already performed. Skipping to next Installation step\n"
 fi
 
 
