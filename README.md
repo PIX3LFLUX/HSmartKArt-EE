@@ -24,8 +24,9 @@ e.Go Kart supplemented by student research projects on driver assistance systems
 modern driver assistance systems and cloud-based services.  
 It is a reference deployment of a more generic design for a modern E/E architecture developed
 in a student research project at the Karlsruhe University of Applied Sciences. Section
-'MQTT-based E/E architecture reference deployment' describes the HSmartKArt-EE deployment and
-gives a brief overview of the more generic E/E architecture design.
+**[MQTT-based E/E architecture reference deployment](#mqtt-based-ee-architecture-reference-deployment)**
+describes the HSmartKArt-EE deployment and gives a brief overview of the more generic E/E
+architecture design.
 
 This repository contains two directories, each providing a installation script. One installs
 a web server which hosts a JupyterLab environment for public access on an Ubunut Server OS.
@@ -170,7 +171,7 @@ or reboot the system to apply the configuration.
 To use the Server simply open a browser and enter the Domain or IP address of the server. For
 developing applications use the Paho MQTT Python library to subscribe on or publishing to
 the topics associated to the CAN-to-MQTT Bridge. For more information on the specification of
-topics associated to a device see section 'XML configuration file'.
+topics associated to a device see section **[XML configuration file](#xml-configuration-file)**.
 
 
 ## Usage
@@ -206,30 +207,28 @@ mapping of the sensor signals into the CAN frames of the module. A module may co
 the bus and transmitted on a MQTT topic. The topic is automatically created using the following
 pattern:
 ```bash
-DEVICE/MODULE/LOCATION/dataCAN
+DEVICE/MODULE/LOCATION/CANID
 ```
-The subtopics in UPPER CASE are specified in the XML configuration file. See provided
-configuration file for reference. These topics are customizable by editing the configuration
-file and updating the CAN-to-MQTT Bridge with the new file. The subtopic `dataCAN` is fixed and
-serves as channel for CAN data traffic. For example, to configure the bridge to publish the
-CAN data on the topic `RPI/ULTRASONIC/REAR/dataCAN` modify the corresponding values for the XML
-tags:
-* `<DEVICE-NAME>RPI</DEVICE-NAME>`
-* `<MODULE-NAME>ULTRASONIC</MODULE-NAME>`
-* `<LOCATION>REAR</LOCATION>`
+Modify the values of the following  XML tags accordingly to customize the topic for CAN data:
+* `<DEVICE-NAME>`, example: `<DEVICE-NAME>RPI3BP0</DEVICE-NAME>`
+* `<MODULE-NAME>`, example: `<MODULE-NAME>ULTRASONIC</MODULE-NAME>`
+* `<LOCATION>`, example: `<LOCATION>FRONT</LOCATION>`
+* `<IDENTIFIER>`, example: `<IDENTIFIER>64</IDENTIFIER>`
+The above example values contruct the topic `RPI3BP0/ULTRASONIC/FRONT/64`.
 
 #### Configuration update
 To update the configuration of an CAN-to-MQTT Bridge simply publish the new XML configuration
 file on the configuration topic of the corresponding device. The device will automatically
 apply the received configuration file and resume to normal operation, transmitting the CAN
-frames specified in the new configuration file on the topic `DEVICE/MODULE/LOCATION/dataCAN`.
-The device configuration topics have the following pattern:
+frames specified in the new configuration file on the topic `DEVICE/MODULE/LOCATION/CANID`. The
+device configuration topics have the following pattern:
 ```bash
 DEVICE/config
 ```
-Like the pattern for the CAN data topics the UPPER CASE part is specified in the configuration
-file and can be changed by editing the configuration file. The subtopic `config` is fixed and
-serves as configuration channel.
+The UPPER CASE part is specified in the configuration file as described in section
+**[XML configuration file](#xml-configuration-file)** and can be changed by editing the
+configuration file. The subtopic `config` is fixed and serves as configuration channel for the
+corresponding device.
 
 **NOTE**: The topic on which the new configuration file needs to be published is determined by
 the value of the XML tag `<DEVICE>` in the old configuration file.
