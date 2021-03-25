@@ -59,40 +59,62 @@ ufw allow 'Nginx Full'
 
 # --- Create and install certificate for Nginx --- #
 certbot --nginx
-cat >> /etc/letsencrypt/renewal/mqttee-server.conf <<EOT
+if [ ! -f /etc/letsencrypt/renewal/mqttee-server.conf ]
+then
+	cat >> /etc/letsencrypt/renewal/mqttee-server.conf <<EOT
 
 renew_hook = systemctl reload jupyterlab
 EOT
-certbot renew --dry-run
-chmod 750 -R /etc/letsencrypt
-chown $USER:$USER -R /etc/letsencrypt
+	certbot renew --dry-run
+	chmod 750 -R /etc/letsencrypt
+	chown $USER:$USER -R /etc/letsencrypt
+else
+	echo -e "Certificate already generated. Skipping to next Installation step\n"
+fi
 
 # --- Configure Nginx --- #
-cp /etc/nginx/sites-enabled/default /etc/nginx/sites-available/
-rm /etc/nginx/sites-enabled/default
-cp config/jupyter.conf /etc/nginx/sites-available/
-ln -s /etc/nginx/sites-available/jupyter.conf /etc/nginx/sites-enabled/
+if [ ! -f /etc/nginx/sites-enabled/jupyter.conf ]
+then
+	cp /etc/nginx/sites-enabled/default /etc/nginx/sites-available/
+	rm /etc/nginx/sites-enabled/default
+	cp config/jupyter.conf /etc/nginx/sites-available/
+	ln -s /etc/nginx/sites-available/jupyter.conf /etc/nginx/sites-enabled/
+else
+	echo -e "Nginx configuration already done. Skipping to next Installation step\n"
+fi
 
 # --- Install Mosquitto --- #
 apt install -y git bc libncurses5-dev bc build-essential ccache cmake libssl-dev
 apt install -y mosquitto mosquitto-clients
 
 # --- Install and activate Miniconda3 --- #
-wget -P /tmp https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-bash /tmp/Miniconda3-latest-Linux-x86_64.sh
-source ~/.bashrc
+if [ ! -d $HOME/miniconda3 ]
+then
+	wget -P /tmp https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+	bash /tmp/Miniconda3-latest-Linux-x86_64.sh
+	source ~/.bashrc
+else
+	echo -e "Miniconda alread installed and activated. Skipping to next Installation step\n"
+fi
 
 # --- Install JupyterLab --- #
 conda install -c conda-forge jupyterlab
 apt install -y nodejs
 
 # --- Configure JupyterLab --- #
-jupyter lab --generate-config
-jupyter lab password
-cp config/jupyter_lab_config.py .jupyter/
+if [ ! -d $HOME/.jupyter ]
+then
+	jupyter lab --generate-config
+	jupyter lab password
+	cp config/jupyter_lab_config.py .jupyter/
+else
+	echo -e "JupyterLab configuration already done. Skipping to next Installation step\n"
+fi
 
 # --- Setup Systemd Service --- #
-cat >> /etc/systemd/system/jupyterlab.service <<EOT
+if [ ! -f /etc/systemd/system/jupyterlab.service ]
+then
+	cat >> /etc/systemd/system/jupyterlab.service <<EOT
 [Unit]
 Description=Jupyter Lab Server
 
@@ -107,6 +129,10 @@ RestartSec=10
 [Install]
 WantedBy=multi-user.target
 EOT
+
+else
+	echo -e "JupyterLab systemd service setup already done. Skipping to next Installation step\n"
+fi
 
 # --- Install Paho MQTT --- #
 conda install -c conda-forge paho-mqtt
