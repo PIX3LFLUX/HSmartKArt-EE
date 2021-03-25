@@ -100,7 +100,7 @@ For the CAN-to-MQTT Bridge installation script following user input is required:
 * MQTT client ID
 
 For the Server installation script following user input is required:
-* The certbot tool needs some user information to create a certificate
+* The Certbot tool needs some user information to create a certificate
 * Password for JupyterLab
 
 ### Prerequisites
@@ -133,13 +133,22 @@ Raspberry Pi:
 3. **For the Server** a host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed. Also a
 public IPv4 address and/or a domain (DNS with an A record for the public IP address) needs to
 be associated with the server. Without public IPv4 or domain the certificate generation will
-fail because certbot cannot perform the http challenges.  
+fail because Certbot cannot perform the http challenges.  
 **NOTE**: When using Unitymedia Connect Box consider the setup of a Portmapper to avoid errors
 due to the IP policy of Unitymedia (Dual-Stack Lite).
 
 
-**NOTE**: The script will not update the software after installation. So updating the Paho MQTT
-C library or the `MQTT_CLIENTID` environment variable needs to be done manually.
+**NOTE**: The installation scripts will only update the apt packages when running them again
+after the first installation. So updating following components needs to be done manually:
+* CAN-to-MQTT Bridge:
+	* Paho MQTT C client library
+	* `MQTT_CLIENTID` environment variable
+* Server:
+	* Certbot certificate generation and renewal hook setup
+	* Nginx configuration
+	* Miniconda3 installation
+	* JupyterLab configuration
+	* Paho MQTT Python client library
 
 ### Installation script for the CAN-to-MQTT Bridge
 To install the software for the CAN-to-MQTT Bridge on a Raspberry Pi simply enter the following
