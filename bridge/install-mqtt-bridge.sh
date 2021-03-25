@@ -42,7 +42,7 @@ apt install -y git bc libncurses5-dev bc build-essential ccache cmake libssl-dev
 apt install -y openssh-server g++ gdb make ninja-build rsync zip
 
 # --- Download Paho MQTT C library source files --- #
-if [ -z $MQTTEE_PAHO_SETUP ]
+if [ ! -v $MQTTEE_PAHO_SETUP ]
 then
 	echo -e "${STYLE_BLUE_FORE}\n\nInstall Paho MQTT C library${STYLE_RESET}\n"
 	git clone https://github.com/eclipse/paho.mqtt.c.git
@@ -69,7 +69,7 @@ fi
 
 # --- Setup CAN interface (PICAN2) --- #
 echo -e "${STYLE_BLUE_FORE}\n\nSetup CAN interface (PICAN2 HAT)${STYLE_RESET}"
-if [ -z $MQTTEE_PICAN2_SETUP ]
+if [ ! -v $MQTTEE_PICAN2_SETUP ]
 then
 	cat >> /boot/config.txt <<EOT
 # PICAN2 Setup
