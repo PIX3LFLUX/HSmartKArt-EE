@@ -116,6 +116,8 @@ are set appropriately:
 	set on system startup the script `mqttclientid.sh` is placed in the directory
 	`/etc/profile.d/`.
 
+Additionally following circumstances should be considered before executing one of the
+installation scripts:
 1. **For the CAN-to-MQTT Bridge** a Raspberry Pi with CAN HAT is needed. The CAN HAT is required
 only when using the Raspberry Pi as CAN-to-MQTT Bridge. Alternatively the Raspberry Pi may be
 used only as MQTT client which is the **default behaviour** of the `mqttbridge` software. See
