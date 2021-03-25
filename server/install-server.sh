@@ -70,7 +70,8 @@ chown $USER:$USER -R /etc/letsencrypt
 # --- Configure Nginx --- #
 cp /etc/nginx/sites-enabled/default /etc/nginx/sites-available/
 rm /etc/nginx/sites-enabled/default
-cp jupyter.conf /etc/nginx/sites-available/
+cp config/jupyter.conf /etc/nginx/sites-available/
+ln -s /etc/nginx/sites-available/jupyter.conf /etc/nginx/sites-enabled/
 
 # --- Install Mosquitto --- #
 apt install -y git bc libncurses5-dev bc build-essential ccache cmake libssl-dev
@@ -88,7 +89,7 @@ apt install -y nodejs
 # --- Configure JupyterLab --- #
 jupyter lab --generate-config
 jupyter lab password
-cp jupyter_lab_config.py .jupyter/
+cp config/jupyter_lab_config.py .jupyter/
 
 # --- Setup Systemd Service --- #
 cat >> /etc/systemd/system/jupyterlab.service <<EOT
@@ -110,6 +111,6 @@ EOT
 # --- Install Paho MQTT --- #
 conda install -c conda-forge paho-mqtt
 
-echo -e "${STYLE_RED_FORE}Reboot system to finish installation.${STYLE_RESET}\n"
+echo -e "${STYLE_RED_FORE}\n\nModify /etc/nginx/sites-available/jupyter.conf and ~/.jupyter/jupyter_lab_config.py and then reboot system to finish installation.${STYLE_RESET}\n"
 
 exit 0
