@@ -213,7 +213,7 @@ Modify the values of the following  XML tags accordingly to customize the topic 
 * `<DEVICE-NAME>`, example: `<DEVICE-NAME>RPI3BP0</DEVICE-NAME>`
 * `<MODULE-NAME>`, example: `<MODULE-NAME>ULTRASONIC</MODULE-NAME>`
 * `<LOCATION>`, example: `<LOCATION>FRONT</LOCATION>`
-* `<IDENTIFIER>`, example: `<IDENTIFIER>64</IDENTIFIER>`
+* `<IDENTIFIER>`, example: `<IDENTIFIER>64</IDENTIFIER>`  
 The above example values contruct the topic `RPI3BP0/ULTRASONIC/FRONT/64`.
 
 #### Configuration update
