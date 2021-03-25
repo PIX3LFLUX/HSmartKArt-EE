@@ -33,17 +33,18 @@ script. One installs a web server which hosts a JupyterLab environment for publi
 Ubunut Server OS. The other is for a Debian-based Embbeded Linux device like the Raspberry Pi
 and installs all components to run the software for a CAN-to-MQTT Bridge.  
 The config.xml is a template XML configuration file for the CAN-to-MQTT Bridge. In the
-subdirectory *server/notebooks* two/three??????? simple Python applications are provided as
-Jupyter Notebooks for the web server hosting JupyterLab. The Paho MQTT Python client library is
-used:
-1. **xyz.ipynb**: This Python application publishes an updated configuration file on the 
+subdirectory *server/notebooks* two simple Python applications are provided as Jupyter
+Notebooks for the web server hosting JupyterLab. The Paho MQTT Python client library is used:
+1. **pub_config.ipynb**: This Python application publishes an updated configuration file on the
 	`DEVICE/config/update` topic. The CAN-to-MQTT Bridge with the device name `DEVICE` will
 	interrupt normal operation and apply the new configuration on reception of valid
 	configuration file. See section **[XML configuration file](#xml-configuration-file)** and
 	**[Configuration update](#configuration-update)** for more information on topics and
-	configuration.
-2. **xyz.ipynb**: This Python application subscribes to the topic RPI3BP0/ULTRASONIC/FRONT/64
-	and prints the received message as a byte stream.
+	configuration.  
+	**NOTE**: Before using this script modify `/path/to/config.xml` to point to the location of
+	the updated configuration file.
+2. **sub_candata.ipynb**: This Python application subscribes to the topic
+	`RPI3BP0/ULTRASONIC/FRONT/64` and prints the received messages as byte streams.
 
 
 ## MQTT-based E/E architecture reference deployment
