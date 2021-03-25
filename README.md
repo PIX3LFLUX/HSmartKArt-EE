@@ -107,8 +107,8 @@ For the Server installation script following user input is required:
 
 For correct execution of the installation scripts make sure the following environment variables
 are set appropriately:
-* `USER`: the system user (with sudo privileges) that will be the owner of the JupyterLab
-	service. Normally set by system.
+* `USER`: the system user (with sudo privileges) that will be the owner of the installed
+	software. Normally set by system.
 * `HOME`: the home directory of `USER`. This will be the installation directory and the default
 	directory when entering the JupyterLab environment. Normally set by system.
 * `MQTT_CLIENTID`: the MQTT client ID used for the CAN-to-MQTT Bridge. This environment
