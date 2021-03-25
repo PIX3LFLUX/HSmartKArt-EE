@@ -58,9 +58,9 @@ apt install -y nginx-full
 ufw allow 'Nginx Full'
 
 # --- Create and install certificate for Nginx --- #
-certbot --nginx
-if [ ! -f /etc/letsencrypt/renewal/mqttee-server.conf ]
+if [ ! -a /etc/letsencrypt/renewal/mqttee-server.conf ]
 then
+	certbot --nginx
 	cat >> /etc/letsencrypt/renewal/mqttee-server.conf <<EOT
 
 renew_hook = systemctl reload jupyterlab
@@ -73,7 +73,7 @@ else
 fi
 
 # --- Configure Nginx --- #
-if [ ! -f /etc/nginx/sites-enabled/jupyter.conf ]
+if [ ! -a /etc/nginx/sites-enabled/jupyter.conf ]
 then
 	cp /etc/nginx/sites-enabled/default /etc/nginx/sites-available/
 	rm /etc/nginx/sites-enabled/default
@@ -112,7 +112,7 @@ else
 fi
 
 # --- Setup Systemd Service --- #
-if [ ! -f /etc/systemd/system/jupyterlab.service ]
+if [ ! -a /etc/systemd/system/jupyterlab.service ]
 then
 	cat >> /etc/systemd/system/jupyterlab.service <<EOT
 [Unit]
@@ -135,7 +135,14 @@ else
 fi
 
 # --- Install Paho MQTT --- #
-conda install -c conda-forge paho-mqtt
+if [ ! -a $HOME/miniconda3/pkgs/paho-mqtt* ]
+then
+	conda install -c conda-forge paho-mqtt
+else
+	echo -e "Paho MQTT Python library already installed. Skipping to next Installation step\n"
+fi
+
+echo -e "${STYLE_BLUE_FORE}\n\nInstalltion script successfully executed.${STYLE_RESET}\n"
 
 echo -e "${STYLE_RED_FORE}\n\nModify /etc/nginx/sites-available/jupyter.conf and ~/.jupyter/jupyter_lab_config.py and then reboot system to finish installation.${STYLE_RESET}\n"
 
