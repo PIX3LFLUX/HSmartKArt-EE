@@ -13,7 +13,6 @@
 		1. **[XML configuration file](#xml-configuration-file)**
 		2. **[Configuration update](#configuration-update)**
 	2. **[Server](#server)**
-		3. **[Examp]
 5. **[To-Do](#to-do)**
 
 
@@ -115,7 +114,7 @@ are set appropriately:
 	startup the script `mqttclientid.sh` is placed in the directory `/etc/profile.d/` during
 	installation.
 
-**For the CAN-to-MQTT Bridge** a Raspberry Pi with CAN HAT is needed. The CAN HAT is required
+1. **For the CAN-to-MQTT Bridge** a Raspberry Pi with CAN HAT is needed. The CAN HAT is required
 only when using the Raspberry Pi as CAN-to-MQTT Bridge. Alternatively the Raspberry Pi may be
 used only as MQTT client which is the **default behaviour** of the `mqttbridge` software. See
 section **[Usage](#usage)** for more information.  
@@ -127,9 +126,9 @@ Raspberry Pi:
 * When using Linux distribution that is not Debian-based the `apt` commands needs to replaced
 with the suupported software package manager.
 
-**For the MQTT Broker** no additional setup is needed when using the HiveMQ platform.
+2. **For the MQTT Broker** no additional setup is needed when using the HiveMQ platform.
 
-**For the Server** a host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed. Also a
+3. **For the Server** a host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed. Also a
 public IPv4 address and/or a domain (DNS with an A record for the public IP address) needs to
 be associated with the server. Without public IPv4 or domain the certificate generation will
 fail because certbot cannot perform the http challenges.  
