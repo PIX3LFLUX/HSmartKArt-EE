@@ -170,23 +170,21 @@ The script will install following comoponents:
 
 After the installation script is finished the Nginx and JupyterLab configurations need to be
 edited to serve Jupyter Notebooks. Therefore templates are provided in the directory
-`server/jupyter`. The `jupyter.conf` is moved to the `/etc/nginx/sites-available` directory
-during installation and `jupyter_lab_config.py` is moved to `~/.jupyter`. Edit the templates
-in the `/etc/nginx/sites-available` and `~/.jupyter` directory respectively. These templates
-include a `<placeholder>` which needs to be replaced with the appropriate value:
-* `<server-domain.com>`: Replace it with the domain or IP address on which the server is
-accessible, i.e. `mqttee-server.com`. 
+`server/config`. The `jupyter.conf` file is moved to the `/etc/nginx/sites-available` directory
+during installation and a symbolic link is created to `/etc/nginx/sites-enabled/` to activate
+jupyter.conf as the configuration for Nginx. The `jupyter_lab_config.py` file is moved to
+`~/.jupyter`. Edit the templates in the `/etc/nginx/sites-available` and `~/.jupyter` directory
+respectively. These templates include `<placeholder>`'s which need to be replaced with the
+appropriate value:
+* `<server-domain.com>`: Replace every instance of this placeholder with the domain or IP
+address on which the server is accessible, i.e. `mqttee-server.com`.
 
-Save the modified templates and run following command:
-```bash
-sudo ln -s /etc/nginx/sites-available/jupyter.conf /etc/nginx/sites-enabled/
-```
-Restart the Nginx and JupyterLab services
+To finish the installation restart the Nginx and JupyterLab services
 ```bash
 sudo systemctl restart nginx
 sudo systemctl restart jupyterlab
 ```
-or reboot the system to apply the configuration.
+or reboot the system.
 
 To use the Server simply open a browser and enter the Domain or IP address of the server. For
 developing applications use the Paho MQTT Python library to subscribe on or publishing to
