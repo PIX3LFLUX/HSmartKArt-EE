@@ -17,6 +17,7 @@
 #include "xmlconfig.h"
 #include "socketcan.h"
 #include "MQTTAsync.h"
+#include "math.h"
 
 
 // --- External variables --- //
@@ -70,22 +71,8 @@ void xml_value_read(char* pos)
 	}
 	value[i] = '\0';
 	//printf("Value: %s\n", value);
-	/* Alternative:
-	char c;
-	size_t i = 0;
-
-	char buf[16];
-	memset(buf, 0, sizeof(buf));
-
-	while ((c = (char)fgetc(fp)) != '<')
-	{
-		buf[i] = c;
-		i++;
-	}
-	buf[i] = '\0';
-	printf("Value: %s\n", buf);
-
-	return (char*)malloc(strlen(buf) * sizeof(char));
+	/*
+	return (char*)malloc(sizeof(value) * sizeof(char));
 	*/
 }
 
@@ -191,17 +178,19 @@ void xml_create_topics()
 {
 	char tmp[XML_LEN_TOPICS] = {};
 	strcat(tmp, device->name);
-	strcat(tmp, "/config");
+	strcat(tmp, "/config/update");
 	strcpy(device->topic_config, tmp);
 	for (size_t i_mod = 0; i_mod < device->cntmod; i_mod++)
 	{
-		memset(tmp, 0, sizeof(tmp));
-		strcat(tmp, device->name);
-		strcat(tmp, "/");
-		strcat(tmp, device->modules[i_mod].name);
-		strcat(tmp, "/");
-		strcat(tmp, device->modules[i_mod].location);
-		strcat(tmp, "/dataCAN");
-		strcpy(device->modules[i_mod].topic_can, tmp);
+		for (size_t i_frm = 0; i_frm < device->modules[i_mod].cntfrm; i_frm++)
+		{
+			memset(tmp, 0, sizeof(tmp));
+			strcat(tmp, device->name);
+			strcat(tmp, "/");
+			strcat(tmp, device->modules[i_mod].name);
+			strcat(tmp, "/");
+			strcat(tmp, device->modules[i_mod].location);
+			snprintf(device->modules[i_mod].frames[i_frm].topic, (size_t)((ceil(log10(device->modules[i_mod].frames[i_frm].canid)) + sizeof(tmp) + 1) * sizeof(char)), "%s/%u", tmp, device->modules[i_mod].frames[i_frm].canid);
+		}
 	}
 }

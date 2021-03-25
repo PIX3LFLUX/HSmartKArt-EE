@@ -112,15 +112,113 @@ int msgrcvdCallback(void* context, char* topicName, int topicLen, MQTTAsync_mess
 {
 	uint16_t msgrcvdlen = (uint16_t)message->payloadlen;
 	uint8_t* msgrcvdptr = (uint8_t*)message->payload;
+	uint8_t* dataptr_u8 = NULL;
+	uint16_t* dataptr_u16 = NULL;
+	uint32_t* dataptr_u32 = NULL;
+	uint64_t* dataptr_u64 = NULL;
+	size_t i_tm = 0; // index topic message
+	size_t i_ts = 0; // index topic structure
+	size_t i_dev = 0;
+	size_t i_mod = 0;
+	size_t i_frm = 0;
+	mqttrcvtopic_t rcvTopic;
+	memset(rcvTopic.canid, 0, sizeof(rcvTopic.canid));
+	memset(rcvTopic.device, 0, sizeof(rcvTopic.device));
+	memset(rcvTopic.module, 0, sizeof(rcvTopic.module));
 
-	if (strstr(topicName, "/config") == NULL)
+	if (strstr(topicName, "/config/update") == NULL)
 	{
-		printf("Message Content: ");
-		for (size_t i = 0; i < msgrcvdlen; i++)
-		{
+		printf("\n\nMessage Content (byte stream): ");
+		for (i_tm = 0; i_tm < msgrcvdlen; i_tm++)
 			printf("%u ", *msgrcvdptr++);
+		
+		// --- Dissect MQTT topic --- //
+		i_tm = 0;
+		while (*(topicName + i_tm) != '/')
+		{
+			rcvTopic.device[i_ts] = *(topicName + i_tm);
+			i_tm++;
+			i_ts++;
 		}
-		printf("\n");
+		i_tm++;
+		i_ts = 0;
+		while (*(topicName + i_tm) != '/')
+		{
+			rcvTopic.module[i_ts] = *(topicName + i_tm);
+			i_tm++;
+			i_ts++;
+		}
+		i_tm++;
+		i_ts = 0;
+		while (*(topicName + i_tm) != '/')
+		{
+			rcvTopic.location[i_ts] = *(topicName + i_tm);
+			i_tm++;
+			i_ts = 0;
+		}
+		i_tm++;
+		i_ts = 0;
+		while (*(topicName + i_tm) != '\0')
+		{
+			rcvTopic.canid[i_ts] = *(topicName + i_tm);
+			i_tm++;
+			i_ts++;
+		}
+
+		// --- Use information of dissected topic to apply correct signal mapping --- //
+		printf("\n\nData representation as specified in XML configuration file:\n");
+		printf("Looking up signal mapping...\n");
+		for (i_dev = 0; i_dev < 1; i_dev++) // Currently only 1 device per xml file is supported
+		{
+			for (i_mod = 0; i_mod < device->cntmod; i_mod++)
+			{
+				for (i_frm = 0; i_frm < device->modules[i_mod].cntfrm; i_frm++)
+				{
+					if (device->modules[i_mod].frames[i_frm].canid == atoi(rcvTopic.canid))
+					{
+						goto stop;
+					}
+				}
+			}
+		}
+	stop: printf("Applying mapping of frame with ID %s: %u signals\n", rcvTopic.canid, device->modules[i_mod].frames[i_frm].cntsig);
+		msgrcvdptr = (uint8_t*)message->payload;
+		for (size_t i_sig = 0; i_sig < device->modules[i_mod].frames[i_frm].cntsig; i_sig++)
+		{
+			switch (device->modules[i_mod].frames[i_frm].signals[i_sig].len)
+			{
+			case 8:
+				dataptr_u8 = msgrcvdptr;
+				// Print data and increment pointer
+				printf("\tSignal %u data: %u\n", i_sig + 1, *dataptr_u8++);
+				msgrcvdptr = dataptr_u8;
+				break;
+			case 16:
+				dataptr_u16 = (uint16_t*)msgrcvdptr;
+				// Print data and increment pointer
+				printf("\tSignal %u data: %u\n", i_sig + 1, *dataptr_u16++);
+				msgrcvdptr = (uint8_t*)dataptr_u16;
+				break;
+			case 32:
+				dataptr_u32 = (uint32_t*)msgrcvdptr;
+				// Print data and increment pointer
+				printf("\tSignal %u data: %u\n", i_sig + 1, *dataptr_u32++);
+				msgrcvdptr = (uint8_t*)dataptr_u32;
+				break;
+			case 64:
+				if (i_sig < 1) // uint64_t = 8 byte -> frame has only 1 signal (device->modules[i_mod].frames[i_frm].signals[0])
+				{
+
+				}
+				dataptr_u64 = (uint64_t*)msgrcvdptr;
+				// Print data (no increment because CAN data is 64bit at max)
+				printf("\tSignal %u data: %llu\n", i_sig + 1, *dataptr_u64);
+				break;
+			default:
+				printf("main(): Unsupported signal length");
+				break;
+			}
+		}
 	}
 	else
 	{

@@ -58,6 +58,7 @@ typedef struct
 
 typedef struct
 {
+	char topic[XML_LEN_TOPICS];
 	unsigned int canid;
 	uint8_t cntsig;
 	xmlsignal_t* signals;
@@ -68,7 +69,6 @@ typedef struct
 	char type[XML_LEN_VALUES];
 	char name[XML_LEN_VALUES];
 	char location[XML_LEN_VALUES];
-	char topic_can[XML_LEN_TOPICS];
 	size_t cntfrm;
 	xmlframe_t* frames;
 } xmlmodule_t;

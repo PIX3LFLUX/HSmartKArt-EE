@@ -25,11 +25,22 @@
 #include <time.h>
 
 #include "MQTTAsync.h"
+#include "xmlconfig.h"
 
 #define QOS	0
 
 bool disconnected;
 bool connected;
+
+
+// --- Typedefs --- //
+typedef struct
+{
+	char device[XML_LEN_VALUES];
+	char module[XML_LEN_VALUES];
+	char location[XML_LEN_VALUES];
+	char canid[XML_LEN_VALUES];
+} mqttrcvtopic_t;
 
 
 // --- Connection Callbacks --- //

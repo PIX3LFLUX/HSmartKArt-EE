@@ -157,6 +157,8 @@ int main(int argc, char* argv[])
 
 	char* clientid = getenv("MQTT_CLIENTID");
 
+	size_t i_mod = 0;
+	size_t i_frm = 0;
 	uint8_t* dataptr = NULL;
 	uint8_t* dataptr_u8 = NULL;
 	uint16_t* dataptr_u16 = NULL;
@@ -295,30 +297,16 @@ int main(int argc, char* argv[])
 					printf("Failed to start unsubscribe, return code %d\n", rc_mqtt);
 					exit(EXIT_FAILURE);
 				}
-				for (size_t i_mod = 0; i_mod < device->cntmod; i_mod++)
-				{
-					if ((rc_mqtt = MQTTAsync_unsubscribe(client_handle, device->modules[i_mod].topic_can, &sub_opts)) != MQTTASYNC_SUCCESS)
-					{
-						printf("Failed to start unsubscribe, return code %d\n", rc_mqtt);
-						exit(EXIT_FAILURE);
-					}
-				}
+				
 				free(device);
 				xml_setup();
 				xml_config_read();
 				xml_create_topics();
+				
 				if ((rc_mqtt = MQTTAsync_subscribe(client_handle, device->topic_config, QOS, &sub_opts)) != MQTTASYNC_SUCCESS)
 				{
 					printf("Failed to start subscribe, return code %d\n", rc_mqtt);
 					exit(EXIT_FAILURE);
-				}
-				for (size_t i_mod = 0; i_mod < device->cntmod; i_mod++)
-				{
-					if ((rc_mqtt = MQTTAsync_subscribe(client_handle, device->modules[i_mod].topic_can, QOS, &sub_opts)) != MQTTASYNC_SUCCESS)
-					{
-						printf("Failed to start unsubscribe, return code %d\n", rc_mqtt);
-						exit(EXIT_FAILURE);
-					}
 				}
 			}
 			free(config_rcvd); // memory for config_rcvd is allocated in the msgrcvdCallback() function, see pahomqtt.c
@@ -352,57 +340,58 @@ int main(int argc, char* argv[])
 			// --- Transmit CAN frame using MQTT --- //
 			pubmsg.payload = canfrmrx.data;
 			printf("\n\nPublishing CAN frame with ID %u", canfrmrx.can_id);
-			for (size_t i_mod = 0; i_mod < device->cntmod; i_mod++)
+			for (i_mod = 0; i_mod < device->cntmod; i_mod++)
 			{
-				for (size_t i_frm = 0; i_frm < device->modules[i_mod].cntfrm; i_frm++)
+				for (i_frm = 0; i_frm < device->modules[i_mod].cntfrm; i_frm++)
 				{
 					if (canfrmrx.can_id == device->modules[i_mod].frames[i_frm].canid)
 					{
-						printf(" on topic\n\t%s\n", device->modules[i_mod].topic_can);
-						if ((rc_mqtt = MQTTAsync_sendMessage(client_handle, device->modules[i_mod].topic_can, &pubmsg, &pub_opts)) != MQTTASYNC_SUCCESS)
-						{
-							printf("Failed to start sendMessage, return code %d\n", rc_mqtt);
-							exit(EXIT_FAILURE);
-						}
-
-						// --- Unpack CAN frame --- //
-						printf("Data representation as specified in XML configuration file:\n");
-						dataptr = canfrmrx.data;
-						for (size_t i_sig = 0; i_sig < device->modules[i_mod].frames[i_frm].cntsig; i_sig++)
-						{
-							switch (device->modules[i_mod].frames[i_frm].signals[i_sig].len)
-							{
-							case 8:
-								dataptr_u8 = dataptr;
-								// Print data and increment pointer
-								printf("\tSignal %u data: %u\n", i_sig + 1, *dataptr_u8++);
-								dataptr = dataptr_u8;
-								break;
-							case 16:
-								dataptr_u16 = (uint16_t*)dataptr;
-								// Print data and increment pointer
-								printf("\tSignal %u data: %u\n", i_sig + 1, *dataptr_u16++);
-								dataptr = (uint8_t*)dataptr_u16;
-								break;
-							case 32:
-								dataptr_u32 = (uint32_t*)dataptr;
-								// Print data and increment pointer
-								printf("\tSignal %u data: %u\n", i_sig + 1, *dataptr_u32++);
-								dataptr = (uint8_t*)dataptr_u32;
-								break;
-							case 64:
-								dataptr_u64 = (uint64_t*)dataptr;
-								// Print data (no increment because CAN data is 64bit at max)
-								printf("\tSignal %u data: %llu\n", i_sig + 1, *dataptr_u64);
-								break;
-							default:
-								printf("main(): Unsupported signal length");
-								break;
-							}
-						} // for i_sig
+						goto stop;
 					}
-				} // for i_frm
-			} // for i_mod
+				}
+			}
+		stop: printf(" on topic\n\t%s\n", device->modules[i_mod].frames[i_frm].topic);
+			if ((rc_mqtt = MQTTAsync_sendMessage(client_handle, device->modules[i_mod].frames[i_frm].topic, &pubmsg, &pub_opts)) != MQTTASYNC_SUCCESS)
+			{
+				printf("Failed to start sendMessage, return code %d\n", rc_mqtt);
+				exit(EXIT_FAILURE);
+			}
+
+			// --- Apply frame mapping --- //
+			printf("Data representation as specified in XML configuration file:\n");
+			dataptr = canfrmrx.data;
+			for (size_t i_sig = 0; i_sig < device->modules[i_mod].frames[i_frm].cntsig; i_sig++)
+			{
+				switch (device->modules[i_mod].frames[i_frm].signals[i_sig].len)
+				{
+				case 8:
+					dataptr_u8 = dataptr;
+					// Print data and increment pointer
+					printf("\tSignal %u data: %u\n", i_sig + 1, *dataptr_u8++);
+					dataptr = dataptr_u8;
+					break;
+				case 16:
+					dataptr_u16 = (uint16_t*)dataptr;
+					// Print data and increment pointer
+					printf("\tSignal %u data: %u\n", i_sig + 1, *dataptr_u16++);
+					dataptr = (uint8_t*)dataptr_u16;
+					break;
+				case 32:
+					dataptr_u32 = (uint32_t*)dataptr;
+					// Print data and increment pointer
+					printf("\tSignal %u data: %u\n", i_sig + 1, *dataptr_u32++);
+					dataptr = (uint8_t*)dataptr_u32;
+					break;
+				case 64:
+					dataptr_u64 = (uint64_t*)dataptr;
+					// Print data (no increment because CAN data is 64bit at max)
+					printf("\tSignal %u data: %llu\n", i_sig + 1, *dataptr_u64);
+					break;
+				default:
+					printf("main(): Unsupported signal length");
+					break;
+				}
+			}
 		}
 	}
 
