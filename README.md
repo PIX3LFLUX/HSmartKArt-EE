@@ -137,7 +137,7 @@ due to the IP policy of Unitymedia (Dual-Stack Lite).
 
 
 **NOTE**: The script will not update the software after installation. So updating the Paho MQTT
-C library or the MQTT_CLIENTID environment variable needs to be done manually.
+C library or the `MQTT_CLIENTID` environment variable needs to be done manually.
 
 ### Installation script for the CAN-to-MQTT Bridge
 To install the software for the CAN-to-MQTT Bridge on a Raspberry Pi simply enter the following
