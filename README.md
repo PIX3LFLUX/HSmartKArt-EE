@@ -9,7 +9,7 @@
 	2. **[Installation script for the CAN-to-MQTT Bridge](#installation-script-for-the-can-to-mqtt-bridge)**
 	2. **[Installation script for the Server](#installation-script-for-the-server)**
 4. **[Usage](#usage)**
-	1. **[CAN-to-MQTT Bridge](#mqtt-bridge)**
+	1. **[CAN-to-MQTT Bridge](#can-to-mqtt-bridge)**
 		1. **[XML configuration file](#xml-configuration-file)**
 		2. **[Configuration update](#configuration-update)**
 	2. **[Server](#server)**
