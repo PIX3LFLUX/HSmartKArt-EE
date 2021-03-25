@@ -95,9 +95,10 @@ may be used to develop Python applications for analyzing, visualizing and record
 data received with the Paho MQTT Python library.
 
 The installation scripts are interactive so be aware that user input is required at certain
-points of the installation. For the CAN-to-MQTT Bridge installation script following user input
-is required:
+points of the installation.
+For the CAN-to-MQTT Bridge installation script following user input is required:
 * MQTT Client ID
+
 For the Server installtion script follwoing user input is required:
 * The certbot tool needs some user information to create a certificate
 * Password for JupyterLab
