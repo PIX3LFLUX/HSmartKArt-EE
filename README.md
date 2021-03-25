@@ -208,7 +208,7 @@ topics associated to a device see section **[XML configuration file](#xml-config
 
 ### CAN-to-MQTT Bridge
 To start the CAN-to-MQTT Bridge software change into the installation directory (directory
-where the install-mqtt-bridge.sh script has been executed). This is where the compiler will put
+where the `install-mqtt-bridge.sh` script has been executed). This is where the compiler will put
 the executable output file if the installation script is successcully completed. In this
 directory run the following command to print a description of the available options:
 ```bash
