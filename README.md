@@ -99,7 +99,7 @@ points of the installation.
 For the CAN-to-MQTT Bridge installation script following user input is required:
 * MQTT Client ID
 
-For the Server installtion script follwoing user input is required:
+For the Server installation script following user input is required:
 * The certbot tool needs some user information to create a certificate
 * Password for JupyterLab
 
