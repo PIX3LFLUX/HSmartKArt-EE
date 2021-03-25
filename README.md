@@ -37,14 +37,14 @@ subdirectory *server/notebooks* two simple Python applications are provided as J
 Notebooks for the web server hosting JupyterLab. The Paho MQTT Python client library is used:
 1. **pub_config.ipynb**: This Python application publishes an updated configuration file on the
 	`DEVICE/config/update` topic. The CAN-to-MQTT Bridge with the device name `DEVICE` will
-	interrupt normal operation and apply the new configuration on reception of valid
-	configuration file. See section **[XML configuration file](#xml-configuration-file)** and
+	interrupt normal operation and apply the new configuration on reception of a valid
+	configuration file. See section	**[XML configuration file](#xml-configuration-file)** and
 	**[Configuration update](#configuration-update)** for more information on topics and
-	configuration.  
-	**NOTE**: Before using this script modify `/path/to/config.xml` to point to the location of
-	the updated configuration file.
+	configuration. Before using this notebook replace `DEVICE` with the appropriate device name
+	and	modify `/path/to/config.xml` to point to the location of the updated configuration file.
 2. **sub_candata.ipynb**: This Python application subscribes to the topic
-	`RPI3BP0/ULTRASONIC/FRONT/64` and prints the received messages as byte streams.
+	`DEVICE/MODULE/LOCATION/CANID` and prints the received messages as byte streams. Modify
+	`DEVICE/MODULE/LOCATION/CANID` with the appropriate topic before running this notebook.
 
 
 ## MQTT-based E/E architecture reference deployment
