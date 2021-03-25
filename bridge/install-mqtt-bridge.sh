@@ -42,9 +42,9 @@ apt install -y git bc libncurses5-dev bc build-essential ccache cmake libssl-dev
 apt install -y openssh-server g++ gdb make ninja-build rsync zip
 
 # --- Download Paho MQTT C library source files --- #
+echo -e "${STYLE_BLUE_FORE}\n\nInstall Paho MQTT C library${STYLE_RESET}\n"
 if [ ! -v $MQTTEE_PAHO_SETUP ]
 then
-	echo -e "${STYLE_BLUE_FORE}\n\nInstall Paho MQTT C library${STYLE_RESET}\n"
 	git clone https://github.com/eclipse/paho.mqtt.c.git
 	# --- Compile Paho MQTT C library --- #
 	cd paho.mqtt.c
