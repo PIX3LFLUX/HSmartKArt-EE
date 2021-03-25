@@ -134,6 +134,8 @@ be associated with the server. Without public IPv4 or domain the certificate gen
 fail because certbot cannot perform the http challenges.  
 **NOTE**: When using Unitymedia Connect Box consider the setup of a Portmapper to avoid errors
 due to the IP policy of Unitymedia (Dual-Stack Lite).
+
+
 **NOTE**: The script will not update the software after installation. So updating the Paho MQTT
 C library or the MQTT_CLIENTID environment variable needs to be done manually.
 
