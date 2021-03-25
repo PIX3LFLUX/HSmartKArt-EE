@@ -160,7 +160,7 @@ sudo bash ./install-mqtt-bridge.sh
 ```
 The script will execute following steps:
 1. Install basic libraries and dependencies
-2. Download, compile and install Paho MQTT C client library (https://www.eclipse.org/paho/index.php?page=clients/c/index.php)
+2. Download, compile and install Paho MQTT C client library
 3. Setup PICAN2 HAT
 4. Install SocketCAN library
 5. Set environment variable for MQTT client ID (user input required)
