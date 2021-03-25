@@ -13,6 +13,7 @@
 		1. **[XML configuration file](#xml-configuration-file)**
 		2. **[Configuration update](#configuration-update)**
 	2. **[Server](#server)**
+		3. **[Examp]
 5. **[To-Do](#to-do)**
 
 
@@ -28,18 +29,29 @@ in a student research project at the Karlsruhe University of Applied Sciences. S
 describes the HSmartKArt-EE deployment and gives a brief overview of the more generic E/E
 architecture design.
 
-This repository contains two directories, each providing a installation script. One installs
-a web server which hosts a JupyterLab environment for public access on an Ubunut Server OS.
-The other is for a Debian-based Embbeded Linux device like the Raspberry Pi and installs all
-components to run the software for a CAN-to-MQTT Bridge.
+This repository contains two directories, *bridge* and *server* each providing a installation
+script. One installs a web server which hosts a JupyterLab environment for public access on an
+Ubunut Server OS. The other is for a Debian-based Embbeded Linux device like the Raspberry Pi
+and installs all components to run the software for a CAN-to-MQTT Bridge.  
+The config.xml is a template XML configuration file for the CAN-to-MQTT Bridge. In the
+subdirectory *server/notebooks* two/three??????? simple Python applications are provided as
+Jupyter Notebooks for the web server hosting JupyterLab. The Paho MQTT Python client library is
+used:
+1. **xyz.ipynb**: This Python application publishes an updated configuration file on the 
+	`DEVICE/config/update` topic. The CAN-to-MQTT Bridge with the device name `DEVICE` will
+	interrupt normal operation and apply the new configuration on reception of valid
+	configuration file. See section **[XML configuration file](#xml-configuration-file)** and
+	**[Configuration update](#configuration-update)** for more information on topics and
+	configuration.
+2. **xyz.ipynb**: This Python application subscribes to the topic RPI3BP0/ULTRASONIC/FRONT/64
+	and prints the received message as a byte stream.
 
 
 ## MQTT-based E/E architecture reference deployment
 
 ### Overview generic design
 
-Considering future vehicle systems following general requirements apply for E/E
-architectures:
+Considering future vehicle systems following general requirements apply for E/E architectures:
 1. Modulare, centralized topology
 2. Efficient hardware and protocols
 3. Cross-domain communication
@@ -57,11 +69,14 @@ networks. Global access of the data enables cloud-based services.
 
 ### Reference deployment
 For the purpose of prototyping a Raspberry Pi is used as an embedded platform. Also a public
-MQTT Broker provided by HiveMQ is used. The main components of the design are:
+MQTT Broker provided by HiveMQ is used.
+
+![Reference deployment](images/hsmartkartee.png)
+
+The main components of the reference deployment are:
 * **CAN-to-MQTT Bridge**: This device is a Raspberry Pi with a CAN HAT. It listens directly on
 	the	CAN bus and grabs CAN frames. The frames can be processed and/or published. Which CAN
-	frames the device publishes is configured by a XML configuration file. So this device is
-	essentially a CAN-to-MQTT Bridge.
+	frames the device publishes is configured by a XML configuration file.
 
 * **MQTT Broker**: An implementation of a local but publicly accessable Broker as proposed in
 	the generic design is currently not included in this repository. Eclipse Mosquitto could be
@@ -71,8 +86,6 @@ MQTT Broker provided by HiveMQ is used. The main components of the design are:
 	public MQTT Broker running on the HiveMQ platform (http://www.mqtt-dashboard.com/) is used
 	for handling the distribution of messages throughout the connected clients. The public
 	Broker is used to evaluate the global access of the CAN data.
-
-![Reference deployment](images/hsmartkartee.png)
 
 
 ## Installation
@@ -102,21 +115,26 @@ are set appropriately:
 	startup the script `mqttclientid.sh` is placed in the directory `/etc/profile.d/` during
 	installation.
 
-For the **CAN-to-MQTT Bridge** component a Raspberry Pi is needed, CAN HAT optional. With some
-small fixes in the installation script can be used for similar devices with a CAN interface
-running a Debian-based Linux distribution:
+**For the CAN-to-MQTT Bridge** a Raspberry Pi with CAN HAT is needed. The CAN HAT is required
+only when using the Raspberry Pi as CAN-to-MQTT Bridge. Alternatively the Raspberry Pi may be
+used only as MQTT client which is the **default behaviour** of the `mqttbridge` software. See
+section **[Usage](#usage)** for more information.  
+With some small fixes and considerations the installation script can be used for other single
+board computers and/or other operating systems that are not fully compatible with the
+Raspberry Pi:
 * CAN Interface Setup needs to be modified according to the used device
 * The CAN interface needs to be compatible with the SocketCAN Linux library
+* When using Linux distribution that is not Debian-based the `apt` commands needs to replaced
+with the suupported software package manager.
 
-For the **MQTT Broker** no additional setup is needed when using the HiveMQ platform.
+**For the MQTT Broker** no additional setup is needed when using the HiveMQ platform.
 
-For the **Server** a host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed. Also a
+**For the Server** a host PC (or Laptop) running the Ubuntu Server 20.04 OS is needed. Also a
 public IPv4 address and/or a domain (DNS with an A record for the public IP address) needs to
 be associated with the server. Without public IPv4 or domain the certificate generation will
 fail because certbot cannot perform the http challenges.  
 **NOTE**: When using Unitymedia Connect Box consider the setup of a Portmapper to avoid errors
 due to the IP policy of Unitymedia (Dual-Stack Lite).
-
 **NOTE**: The script will not update the software after installation. So updating the Paho MQTT
 C library or the MQTT_CLIENTID environment variable needs to be done manually.
 
@@ -184,7 +202,8 @@ directory run the following command to print a description of the available opti
 ```bash
 ./mqttbridge -h
 ```
-To operate as CAN-to-MQTT Bridge run
+By default the device will operate as MQTT client only receiving CAN data from other devices
+over MQTT. To operate as CAN-to-MQTT Bridge run
 ```bash
 ./mqttbridge -c "true"
 ```
