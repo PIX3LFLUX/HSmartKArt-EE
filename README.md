@@ -97,7 +97,7 @@ data received with the Paho MQTT Python library.
 The installation scripts are interactive so be aware that user input is required at certain
 points of the installation.
 For the CAN-to-MQTT Bridge installation script following user input is required:
-* MQTT Client ID
+* MQTT client ID
 
 For the Server installation script following user input is required:
 * The certbot tool needs some user information to create a certificate
@@ -111,10 +111,10 @@ are set appropriately:
 	service. Normally set by system.
 * `HOME`: the home directory of `USER`. This will be the installation directory and the default
 	directory when entering the JupyterLab environment. Normally set by system.
-* `MQTT_CLIENTID`: the MQTT client id used for the CAN-to-MQTT Bridge. This environment
-	variable needs to be set manually. To make sure the environment variable is set on system
-	startup the script `mqttclientid.sh` is placed in the directory `/etc/profile.d/` during
-	installation.
+* `MQTT_CLIENTID`: the MQTT client ID used for the CAN-to-MQTT Bridge. This environment
+	variable is set by the user during installation. To make sure the environment variable is
+	set on system startup the script `mqttclientid.sh` is placed in the directory
+	`/etc/profile.d/`.
 
 1. **For the CAN-to-MQTT Bridge** a Raspberry Pi with CAN HAT is needed. The CAN HAT is required
 only when using the Raspberry Pi as CAN-to-MQTT Bridge. Alternatively the Raspberry Pi may be
