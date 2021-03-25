@@ -121,10 +121,10 @@ section **[Usage](#usage)** for more information.
 With some small fixes and considerations the installation script can be used for other single
 board computers and/or other operating systems that are not fully compatible with the
 Raspberry Pi:
-* CAN Interface Setup needs to be modified according to the used device
-* The CAN interface needs to be compatible with the SocketCAN Linux library
-* When using Linux distribution that is not Debian-based the `apt` commands needs to replaced
-with the suupported software package manager.
+	* CAN Interface Setup needs to be modified according to the used device
+	* The CAN interface needs to be compatible with the SocketCAN Linux library
+	* When using Linux distribution that is not Debian-based the `apt` commands needs to replaced
+	with the suupported software package manager.
 
 2. **For the MQTT Broker** no additional setup is needed when using the HiveMQ platform.
 
