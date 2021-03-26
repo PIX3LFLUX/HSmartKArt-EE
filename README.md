@@ -46,6 +46,8 @@ Notebooks for the web server hosting JupyterLab. The Paho MQTT Python client lib
 	`DEVICE/MODULE/LOCATION/CANID` and prints the received messages as byte streams. Modify
 	`DEVICE/MODULE/LOCATION/CANID` with the appropriate topic before running this notebook.
 
+**NOTE**: Currently only CAN 2.0A (standard frame format) is supported. CAN 2.0B with Extended
+	frame format is not supported.
 
 ## MQTT-based E/E architecture reference deployment
 
