@@ -190,7 +190,7 @@ void xml_create_topics()
 			strcat(tmp, device->modules[i_mod].name);
 			strcat(tmp, "/");
 			strcat(tmp, device->modules[i_mod].location);
-			snprintf(device->modules[i_mod].frames[i_frm].topic, (size_t)((ceil(log10(device->modules[i_mod].frames[i_frm].canid)) + sizeof(tmp) + 1) * sizeof(char)), "%s/%u", tmp, device->modules[i_mod].frames[i_frm].canid);
+			sprintf(device->modules[i_mod].frames[i_frm].topic, "%s/%u", tmp, device->modules[i_mod].frames[i_frm].canid);
 		}
 	}
 }
