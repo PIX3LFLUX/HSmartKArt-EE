@@ -28,6 +28,8 @@ in a student research project at the Karlsruhe University of Applied Sciences. S
 describes the HSmartKArt-EE deployment and gives a brief overview of the more generic E/E
 architecture design.
 
+See also https://www.youtube.com/watch?v=mncoWB33cDU for introductory video.
+
 This repository contains two directories, *bridge* and *server* each providing a installation
 script. One installs a web server which hosts a JupyterLab environment for public access on an
 Ubunut Server OS. The other is for a Debian-based Embbeded Linux device like the Raspberry Pi
